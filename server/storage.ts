@@ -90,6 +90,7 @@ export class MemStorage implements IStorage {
     const competition: Competition = {
       ...insertCompetition,
       id: this.currentCompetitionId++,
+      isActive: insertCompetition.isActive || "true",
     };
     this.competitions.set(competition.id, competition);
     return competition;

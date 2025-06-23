@@ -27,14 +27,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const startDate = competition.startDate.toISOString().split('T')[0];
       const endDate = competition.endDate.toISOString().split('T')[0];
 
-      // Fetch data from Rainbet API
+      // Fetch data from Rainbet API with timeout
       const params = new URLSearchParams({
         start_at: startDate,
         end_at: endDate,
         key: RAINBET_API_CONFIG.key
       });
 
-      const response = await fetch(`${RAINBET_API_CONFIG.endpoint}?${params}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      const response = await fetch(`${RAINBET_API_CONFIG.endpoint}?${params}`, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'MarioZip-Leaderboard/1.0',
+          'Accept': 'application/json'
+        }
+      });
+      
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
         throw new Error(`Rainbet API error: ${response.status} ${response.statusText}`);
@@ -50,12 +61,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           rank: index + 1,
           prize: PRIZE_STRUCTURE[index] || 0
         }))
-        .sort((a: any, b: any) => b.totalWager - a.totalWager)
+        .sort((a, b) => b.totalWager - a.totalWager)
         .slice(0, 50); // Limit to top 50
 
       // Update local storage with fresh data
       await storage.updateLeaderboardEntries(
-        players.map(p => ({
+        players.map((p: any) => ({
           username: p.username,
           totalWager: p.totalWager.toString(),
           rank: p.rank
