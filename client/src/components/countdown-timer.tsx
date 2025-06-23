@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getNextResetDate } from '@/lib/utils';
+import { Clock } from 'lucide-react';
 
 interface CountdownTimerProps {
   targetDate?: Date;
@@ -43,21 +44,24 @@ export function CountdownTimer({ targetDate, onReset }: CountdownTimerProps) {
 
   const CountdownDigit = ({ value, label }: { value: number; label: string }) => (
     <div className="text-center">
-      <div className="countdown-digit rounded-xl p-6 mb-2">
-        <span className="text-4xl font-orbitron font-black text-gaming-off-white">
+      <div className="countdown-card rounded-xl p-4 blue-glow">
+        <span className="text-3xl md:text-4xl font-mono font-bold text-slate-50">
           {value.toString().padStart(2, '0')}
         </span>
       </div>
-      <span className="text-sm font-rajdhani text-gaming-metallic">{label}</span>
+      <span className="text-sm font-medium text-slate-400 mt-2 block">{label}</span>
     </div>
   );
 
   return (
-    <div className="gaming-card gaming-glow rounded-2xl p-8 max-w-4xl mx-auto mb-12">
-      <h3 className="text-2xl font-orbitron font-bold text-gaming-accent mb-6 text-center">
-        Competition Ends In
-      </h3>
-      <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
+    <div className="glass-card rounded-2xl p-8 max-w-4xl mx-auto">
+      <div className="flex items-center justify-center space-x-2 mb-6">
+        <Clock className="w-6 h-6 text-blue-400" />
+        <h3 className="text-xl font-bold text-slate-50">
+          Competition Ends In
+        </h3>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
         <CountdownDigit value={timeLeft.days} label="DAYS" />
         <CountdownDigit value={timeLeft.hours} label="HOURS" />
         <CountdownDigit value={timeLeft.minutes} label="MINUTES" />

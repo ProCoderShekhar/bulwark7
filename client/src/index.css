@@ -1,60 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
-
 :root {
-  --background: hsl(220, 65%, 97%);
-  --foreground: hsl(220, 9%, 6%);
-  --muted: hsl(220, 14%, 96%);
-  --muted-foreground: hsl(220, 9%, 46%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(220, 9%, 6%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(220, 9%, 6%);
-  --border: hsl(220, 13%, 91%);
-  --input: hsl(220, 13%, 91%);
-  --primary: hsl(220, 83%, 33%);
-  --primary-foreground: hsl(210, 40%, 98%);
-  --secondary: hsl(220, 14%, 96%);
-  --secondary-foreground: hsl(220, 9%, 10%);
-  --accent: hsl(220, 14%, 96%);
-  --accent-foreground: hsl(220, 9%, 10%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(60, 9%, 98%);
-  --ring: hsl(220, 83%, 33%);
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
   --radius: 0.5rem;
 
-  /* Gaming Theme Colors */
-  --gaming-primary: hsl(220, 83%, 33%);
-  --gaming-secondary: hsl(213, 94%, 68%);
-  --gaming-metallic: hsl(216, 12%, 56%);
-  --gaming-accent: hsl(188, 95%, 43%);
-  --gaming-dark-slate: hsl(222, 84%, 5%);
-  --gaming-off-white: hsl(210, 40%, 98%);
+  /* Professional Blue Metallic Theme */
+  --slate-50: 248 250 252;
+  --slate-100: 241 245 249;
+  --slate-200: 226 232 240;
+  --slate-300: 203 213 225;
+  --slate-400: 148 163 184;
+  --slate-500: 100 116 139;
+  --slate-600: 71 85 105;
+  --slate-700: 51 65 85;
+  --slate-800: 30 41 59;
+  --slate-900: 15 23 42;
+  --slate-950: 2 6 23;
+
+  --blue-50: 239 246 255;
+  --blue-100: 219 234 254;
+  --blue-200: 191 219 254;
+  --blue-300: 147 197 253;
+  --blue-400: 96 165 250;
+  --blue-500: 59 130 246;
+  --blue-600: 37 99 235;
+  --blue-700: 29 78 216;
+  --blue-800: 30 64 175;
+  --blue-900: 30 58 138;
+  --blue-950: 23 37 84;
+
+  --steel-400: 148 163 184;
+  --steel-500: 100 116 139;
+  --steel-600: 71 85 105;
+  
+  --cyan-400: 34 211 238;
+  --cyan-500: 6 182 212;
+  --cyan-600: 8 145 178;
 }
 
 .dark {
-  --background: hsl(222, 84%, 5%);
-  --foreground: hsl(210, 40%, 98%);
-  --muted: hsl(217, 32%, 17%);
-  --muted-foreground: hsl(215, 20%, 65%);
-  --popover: hsl(224, 71%, 4%);
-  --popover-foreground: hsl(210, 40%, 98%);
-  --card: hsl(224, 71%, 4%);
-  --card-foreground: hsl(210, 40%, 98%);
-  --border: hsl(217, 32%, 17%);
-  --input: hsl(217, 32%, 17%);
-  --primary: hsl(213, 94%, 68%);
-  --primary-foreground: hsl(222, 84%, 5%);
-  --secondary: hsl(217, 32%, 17%);
-  --secondary-foreground: hsl(210, 40%, 98%);
-  --accent: hsl(217, 32%, 17%);
-  --accent-foreground: hsl(210, 40%, 98%);
-  --destructive: hsl(0, 62%, 30%);
-  --destructive-foreground: hsl(210, 40%, 98%);
-  --ring: hsl(213, 94%, 68%);
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
 }
 
 @layer base {
@@ -63,104 +88,113 @@
   }
   
   body {
-    @apply bg-gaming-dark-slate text-gaming-off-white font-inter antialiased;
-    background-color: hsl(var(--gaming-dark-slate));
-    color: hsl(var(--gaming-off-white));
+    @apply bg-slate-950 text-slate-50 antialiased;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, rgb(2 6 23) 0%, rgb(15 23 42) 100%);
+    min-height: 100vh;
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer components {
-  .gaming-card {
-    @apply rounded-xl border backdrop-blur-sm;
-    background: linear-gradient(135deg, hsl(var(--gaming-primary) / 0.1), hsl(var(--gaming-secondary) / 0.1));
-    border-color: hsl(var(--gaming-accent) / 0.3);
+  .glass-card {
+    @apply backdrop-blur-xl border border-slate-800/50;
+    background: linear-gradient(135deg, 
+      rgba(51, 65, 85, 0.1) 0%, 
+      rgba(30, 41, 59, 0.2) 100%);
+    box-shadow: 
+      0 4px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
   }
   
-  .gaming-glow {
-    box-shadow: 0 0 20px hsl(var(--gaming-accent) / 0.3);
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:shadow-2xl;
   }
   
-  .gaming-glow-hover:hover {
-    box-shadow: 0 0 25px hsl(var(--gaming-accent) / 0.5);
+  .glass-card-hover:hover {
     transform: translateY(-2px);
-    transition: all 0.3s ease;
+    box-shadow: 
+      0 8px 40px rgba(59, 130, 246, 0.15),
+      0 4px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
   }
   
   .metallic-gradient {
-    background: linear-gradient(135deg, hsl(var(--gaming-metallic)), hsl(216, 12%, 46%), hsl(216, 12%, 66%));
+    background: linear-gradient(135deg, 
+      rgb(100 116 139) 0%, 
+      rgb(148 163 184) 50%, 
+      rgb(100 116 139) 100%);
   }
   
-  .countdown-digit {
-    background: linear-gradient(135deg, hsl(var(--gaming-primary)), hsl(var(--gaming-secondary)));
-    text-shadow: 0 0 10px hsl(var(--gaming-accent) / 0.8);
+  .blue-glow {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+  }
+  
+  .blue-glow-intense {
+    box-shadow: 0 0 50px rgba(59, 130, 246, 0.5);
+  }
+  
+  .countdown-card {
+    @apply glass-card;
+    background: linear-gradient(135deg, 
+      rgba(29, 78, 216, 0.1) 0%, 
+      rgba(59, 130, 246, 0.1) 100%);
   }
   
   .rank-badge {
-    background: linear-gradient(135deg, hsl(var(--gaming-metallic)), hsl(216, 12%, 46%));
-    border: 2px solid hsl(var(--gaming-accent));
+    @apply glass-card;
+    background: linear-gradient(135deg, 
+      rgba(100, 116, 139, 0.8) 0%, 
+      rgba(148, 163, 184, 0.8) 100%);
   }
   
-  .prize-glow {
-    text-shadow: 0 0 15px hsl(var(--gaming-accent) / 0.8);
+  .prize-text {
+    background: linear-gradient(135deg, 
+      rgb(34 211 238) 0%, 
+      rgb(59 130 246) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .loading-shimmer {
-    background: linear-gradient(90deg, transparent, hsl(var(--gaming-accent) / 0.2), transparent);
-    animation: shimmer 1.5s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .loading-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(59, 130, 246, 0.1), 
+      transparent);
+    animation: shimmer 2s infinite;
   }
   
   @keyframes shimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
   }
+  
+  .social-link {
+    @apply glass-card p-3 rounded-lg transition-all duration-300 hover:scale-105;
+  }
+  
+  .social-link:hover {
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+  }
 }
 
 @layer utilities {
-  .font-orbitron {
-    font-family: 'Orbitron', monospace;
-  }
-  
-  .font-rajdhani {
-    font-family: 'Rajdhani', sans-serif;
-  }
-  
-  .font-inter {
-    font-family: 'Inter', sans-serif;
-  }
-  
-  .text-gaming-primary {
-    color: hsl(var(--gaming-primary));
-  }
-  
-  .text-gaming-secondary {
-    color: hsl(var(--gaming-secondary));
-  }
-  
-  .text-gaming-metallic {
-    color: hsl(var(--gaming-metallic));
-  }
-  
-  .text-gaming-accent {
-    color: hsl(var(--gaming-accent));
-  }
-  
-  .text-gaming-off-white {
-    color: hsl(var(--gaming-off-white));
-  }
-  
-  .bg-gaming-primary {
-    background-color: hsl(var(--gaming-primary));
-  }
-  
-  .bg-gaming-secondary {
-    background-color: hsl(var(--gaming-secondary));
-  }
-  
-  .bg-gaming-dark-slate {
-    background-color: hsl(var(--gaming-dark-slate));
-  }
-  
-  .border-gaming-accent {
-    border-color: hsl(var(--gaming-accent));
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
   }
 }

@@ -4,7 +4,7 @@ import { CountdownTimer } from '@/components/countdown-timer';
 import { LeaderboardCard } from '@/components/leaderboard-card';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, ExternalLink, Twitter, MessageCircle, Youtube, Instagram } from 'lucide-react';
+import { AlertCircle, Twitter, MessageCircle, Youtube, Instagram, Trophy, Crown, Medal, TrendingUp, Clock, Users } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import type { LeaderboardData } from '@shared/schema';
 
@@ -21,12 +21,12 @@ export default function LeaderboardPage() {
     refetch 
   } = useQuery<LeaderboardData>({
     queryKey: ['/api/leaderboard'],
-    refetchInterval: 30000, // Refresh every 30 seconds
+    refetchInterval: 30000,
   });
 
-  const { data: competitionData } = useQuery({
+  const { data: competitionData } = useQuery<any>({
     queryKey: ['/api/competition'],
-    refetchInterval: 60000, // Refresh every minute
+    refetchInterval: 60000,
   });
 
   useEffect(() => {
@@ -36,22 +36,23 @@ export default function LeaderboardPage() {
   }, [leaderboardData]);
 
   const handleCountdownReset = () => {
-    // Trigger a refetch when countdown reaches zero
     refetch();
   };
 
   const LoadingSkeleton = () => (
-    <div className="space-y-4">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="gaming-card rounded-xl p-6 relative overflow-hidden">
-          <div className="loading-shimmer absolute inset-0"></div>
+    <div className="space-y-6">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="glass-card rounded-2xl p-6 loading-shimmer">
           <div className="flex items-center space-x-6">
-            <Skeleton className="w-12 h-12 rounded-full bg-gaming-metallic/30" />
+            <Skeleton className="w-16 h-16 rounded-full bg-slate-700/50" />
             <div className="flex-1 space-y-3">
-              <Skeleton className="h-4 bg-gaming-metallic/30 rounded w-1/4" />
-              <Skeleton className="h-3 bg-gaming-metallic/30 rounded w-1/3" />
+              <Skeleton className="h-5 bg-slate-700/50 rounded w-1/3" />
+              <Skeleton className="h-4 bg-slate-700/50 rounded w-1/4" />
             </div>
-            <Skeleton className="h-6 bg-gaming-metallic/30 rounded w-24" />
+            <div className="text-right space-y-2">
+              <Skeleton className="h-6 bg-slate-700/50 rounded w-24" />
+              <Skeleton className="h-4 bg-slate-700/50 rounded w-16" />
+            </div>
           </div>
         </div>
       ))}
@@ -59,67 +60,69 @@ export default function LeaderboardPage() {
   );
 
   const ErrorState = () => (
-    <Card className="gaming-card gaming-glow">
-      <CardContent className="pt-6">
-        <div className="flex items-center gap-2 mb-4">
-          <AlertCircle className="h-8 w-8 text-red-500" />
-          <h3 className="text-xl font-rajdhani font-bold text-gaming-off-white">
-            Unable to load leaderboard
-          </h3>
-        </div>
-        <p className="text-gaming-metallic mb-4">
-          Failed to fetch data from the Rainbet API. Please check your connection and try again.
-        </p>
-        <button 
-          onClick={() => refetch()}
-          className="px-6 py-2 bg-gaming-accent text-gaming-dark-slate font-rajdhani font-semibold rounded-lg hover:bg-gaming-secondary transition-colors"
-        >
-          Retry
-        </button>
-      </CardContent>
-    </Card>
+    <div className="glass-card rounded-2xl p-8 text-center">
+      <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+      <h3 className="text-2xl font-bold text-slate-50 mb-2">Unable to Load Data</h3>
+      <p className="text-slate-400 mb-6">
+        Failed to connect to Rainbet API. Please check your connection and try again.
+      </p>
+      <button 
+        onClick={() => refetch()}
+        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+      >
+        Retry Connection
+      </button>
+    </div>
   );
 
   return (
-    <div className="min-h-screen bg-gaming-dark-slate text-gaming-off-white">
-      {/* Header */}
-      <header className="w-full border-b border-gaming-accent/20 bg-gradient-to-r from-gaming-primary/20 to-gaming-secondary/20 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="min-h-screen">
+      {/* Navigation Header */}
+      <nav className="sticky top-0 z-50 glass-card border-b border-slate-800/50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <img 
                 src={MARIOZIP_LOGO}
-                alt="MarioZip Logo" 
-                className="w-12 h-12 rounded-full border-2 border-gaming-accent gaming-glow object-cover"
+                alt="MarioZip" 
+                className="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
               />
               <div>
-                <h1 className="text-2xl font-orbitron font-bold text-gaming-accent">MarioZip</h1>
-                <p className="text-sm text-gaming-metallic font-rajdhani">Wager Competition</p>
+                <h1 className="text-xl font-bold text-slate-50">MarioZip</h1>
+                <p className="text-sm text-slate-400">Wager Competition</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gaming-metallic font-rajdhani">Sponsored by</span>
+              <span className="text-sm text-slate-400">Powered by</span>
               <img 
                 src={RAINBET_LOGO}
-                alt="Rainbet Logo" 
+                alt="Rainbet" 
                 className="h-8 object-contain"
               />
             </div>
           </div>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
-      <section className="w-full py-12 bg-gradient-to-b from-transparent to-gaming-primary/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl sm:text-6xl font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-gaming-accent to-gaming-secondary mb-4">
-            WAGER LEADERBOARD
-          </h2>
-          <p className="text-xl text-gaming-metallic font-rajdhani mb-8">
-            Compete for the top spot • Monthly resets on the 24th
-          </p>
+      <section className="py-20 text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-8">
+            <TrendingUp className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-medium text-blue-400">Live Competition</span>
+          </div>
           
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            <span className="text-slate-50">Wager</span>
+            <span className="prize-text"> Leaderboard</span>
+          </h1>
+          
+          <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+            Compete with the best players and climb to the top. 
+            Monthly competitions with massive prize pools.
+          </p>
+
           <CountdownTimer 
             targetDate={competitionData?.endDate ? new Date(competitionData.endDate) : undefined}
             onReset={handleCountdownReset}
@@ -127,51 +130,70 @@ export default function LeaderboardPage() {
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="w-full py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Prize Pool */}
-          <div className="gaming-card gaming-glow rounded-2xl p-6 mb-12 text-center">
-            <h3 className="text-2xl font-orbitron font-bold text-gaming-accent mb-4">Total Prize Pool</h3>
-            <div className="text-5xl font-orbitron font-black prize-glow text-gaming-secondary mb-2">
-              {formatCurrency(leaderboardData?.totalPrizePool || 25000)}
+      {/* Stats Overview */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="glass-card-hover rounded-2xl p-6 text-center">
+              <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
+              <div className="text-3xl font-bold prize-text mb-1">
+                {formatCurrency(leaderboardData?.totalPrizePool || 25000)}
+              </div>
+              <p className="text-slate-400">Total Prize Pool</p>
             </div>
-            <p className="text-gaming-metallic font-rajdhani">Distributed among top 10 players</p>
-          </div>
-
-          {/* Leaderboard Header */}
-          <div className="flex justify-between items-center mb-8">
-            <h3 className="text-3xl font-orbitron font-bold text-gaming-accent">Current Rankings</h3>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gaming-metallic font-rajdhani">Last updated:</span>
-              <span className="text-gaming-accent font-rajdhani font-semibold">
+            
+            <div className="glass-card-hover rounded-2xl p-6 text-center">
+              <Users className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+              <div className="text-3xl font-bold text-slate-50 mb-1">
+                {formatNumber(leaderboardData?.totalPlayers || 0)}
+              </div>
+              <p className="text-slate-400">Active Players</p>
+            </div>
+            
+            <div className="glass-card-hover rounded-2xl p-6 text-center">
+              <Clock className="w-8 h-8 text-cyan-400 mx-auto mb-3" />
+              <div className="text-lg font-bold text-slate-50 mb-1">
                 {lastUpdated || 'Live'}
-              </span>
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              </div>
+              <p className="text-slate-400">Last Updated</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leaderboard */}
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-slate-50">Current Rankings</h2>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-slate-400">Live Data</span>
             </div>
           </div>
 
-          {/* Content */}
           {isLoading && <LoadingSkeleton />}
           {error && <ErrorState />}
           
           {leaderboardData && (
-            <div className="space-y-4">
-              {/* Top 3 Special Cards */}
-              {leaderboardData.players.length > 0 && (
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                  {leaderboardData.players.slice(0, 3).map((player) => (
-                    <LeaderboardCard 
-                      key={player.rank} 
-                      player={player} 
-                      isTopThree={true}
-                    />
-                  ))}
+            <>
+              {/* Top 3 Podium */}
+              {leaderboardData.players.length >= 3 && (
+                <div className="mb-12">
+                  <h3 className="text-xl font-bold text-slate-50 mb-6 text-center">Top Performers</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {leaderboardData.players.slice(0, 3).map((player) => (
+                      <LeaderboardCard 
+                        key={player.rank} 
+                        player={player} 
+                        isTopThree={true}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {/* Remaining Rankings */}
+              {/* Full Rankings */}
               <div className="space-y-4">
                 {leaderboardData.players.slice(3).map((player) => (
                   <LeaderboardCard 
@@ -184,107 +206,90 @@ export default function LeaderboardPage() {
 
               {/* Empty State */}
               {leaderboardData.players.length === 0 && (
-                <div className="gaming-card gaming-glow rounded-xl p-12 text-center">
-                  <h3 className="text-xl font-rajdhani font-bold text-gaming-off-white mb-2">
-                    No players yet
+                <div className="glass-card rounded-2xl p-12 text-center">
+                  <Trophy className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-slate-50 mb-2">
+                    Competition Starting Soon
                   </h3>
-                  <p className="text-gaming-metallic">
-                    Be the first to join the competition!
+                  <p className="text-slate-400">
+                    Be among the first to join and compete for the top spot!
                   </p>
                 </div>
               )}
-            </div>
+            </>
           )}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="w-full py-12 bg-gradient-to-t from-gaming-primary/20 to-transparent border-t border-gaming-accent/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8 items-center">
+      <footer className="py-16 mt-20 border-t border-slate-800/50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             
-            {/* MarioZip Info */}
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
                 <img 
                   src={MARIOZIP_LOGO}
-                  alt="MarioZip Logo" 
-                  className="w-10 h-10 rounded-full border border-gaming-accent object-cover"
+                  alt="MarioZip" 
+                  className="w-10 h-10 rounded-full border border-blue-500/50 object-cover"
                 />
-                <h4 className="text-xl font-orbitron font-bold text-gaming-accent">MarioZip</h4>
+                <h4 className="text-xl font-bold text-slate-50">MarioZip</h4>
               </div>
-              <p className="text-gaming-metallic font-rajdhani">
-                The ultimate wager competition platform. 
-                <br />Play responsibly and may the odds be in your favor.
+              <p className="text-slate-400 leading-relaxed">
+                The premier destination for competitive wagering. 
+                Join thousands of players competing for substantial prizes.
               </p>
             </div>
 
-            {/* Social Media Links */}
-            <div className="text-center">
-              <h4 className="text-lg font-rajdhani font-bold text-gaming-accent mb-4">Follow MarioZip</h4>
-              <div className="flex justify-center space-x-6">
-                <a 
-                  href="#" 
-                  className="gaming-card p-3 rounded-lg gaming-glow-hover text-gaming-accent hover:text-gaming-secondary transition-colors"
-                >
-                  <Twitter className="w-6 h-6" />
+            {/* Social Links */}
+            <div>
+              <h4 className="text-lg font-semibold text-slate-50 mb-4">Connect</h4>
+              <div className="flex space-x-4">
+                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                  <Twitter className="w-5 h-5" />
                 </a>
-                <a 
-                  href="#" 
-                  className="gaming-card p-3 rounded-lg gaming-glow-hover text-gaming-accent hover:text-gaming-secondary transition-colors"
-                >
-                  <MessageCircle className="w-6 h-6" />
+                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                  <MessageCircle className="w-5 h-5" />
                 </a>
-                <a 
-                  href="#" 
-                  className="gaming-card p-3 rounded-lg gaming-glow-hover text-gaming-accent hover:text-gaming-secondary transition-colors"
-                >
-                  <Youtube className="w-6 h-6" />
+                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                  <Youtube className="w-5 h-5" />
                 </a>
-                <a 
-                  href="#" 
-                  className="gaming-card p-3 rounded-lg gaming-glow-hover text-gaming-accent hover:text-gaming-secondary transition-colors"
-                >
-                  <Instagram className="w-6 h-6" />
+                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                  <Instagram className="w-5 h-5" />
                 </a>
               </div>
             </div>
 
             {/* Competition Info */}
-            <div className="text-center md:text-right">
-              <h4 className="text-lg font-rajdhani font-bold text-gaming-accent mb-4">Competition Details</h4>
-              <div className="space-y-2 text-sm text-gaming-metallic font-rajdhani">
+            <div>
+              <h4 className="text-lg font-semibold text-slate-50 mb-4">Competition</h4>
+              <div className="space-y-2 text-sm text-slate-400">
                 <p>
-                  Current Period: <span className="text-gaming-accent">
+                  Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
                       ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
-                      : 'June 24 - July 24'
+                      : 'June 23 - July 23'
                     }
                   </span>
                 </p>
                 <p>
-                  Total Players: <span className="text-gaming-accent">
-                    {formatNumber(leaderboardData?.totalPlayers || 0)}
-                  </span>
+                  Reset: <span className="text-slate-300">Monthly on 24th</span>
                 </p>
                 <p>
-                  Next Reset: <span className="text-gaming-accent">
-                    {competitionData?.endDate 
-                      ? new Date(competitionData.endDate).toLocaleDateString()
-                      : 'July 24, 2024'
-                    }
+                  Prize Pool: <span className="text-blue-400 font-semibold">
+                    {formatCurrency(leaderboardData?.totalPrizePool || 25000)}
                   </span>
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="border-t border-gaming-accent/20 mt-8 pt-8 text-center">
-            <p className="text-gaming-metallic text-sm font-rajdhani">
-              © 2024 MarioZip. All rights reserved. | 
-              <span className="text-gaming-accent"> Sponsored by Rainbet</span> | 
-              Gamble responsibly. 18+
+          <div className="border-t border-slate-800/50 mt-12 pt-8 text-center">
+            <p className="text-slate-500 text-sm">
+              © 2024 MarioZip. All rights reserved. • 
+              <span className="text-blue-400"> Powered by Rainbet</span> • 
+              Play responsibly. 18+
             </p>
           </div>
         </div>

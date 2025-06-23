@@ -22,10 +22,10 @@ export function getNextResetDate(): Date {
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
   
-  if (now.getDate() < 24) {
-    return new Date(currentYear, currentMonth, 24, 0, 0, 0);
+  if (now.getDate() < 23) {
+    return new Date(currentYear, currentMonth, 23, 0, 0, 0);
   } else {
-    return new Date(currentYear, currentMonth + 1, 24, 0, 0, 0);
+    return new Date(currentYear, currentMonth + 1, 23, 0, 0, 0);
   }
 }
 
