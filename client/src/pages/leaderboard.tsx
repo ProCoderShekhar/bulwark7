@@ -93,13 +93,23 @@ export default function LeaderboardPage() {
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
-              <span className="text-sm text-slate-400">Powered by</span>
-              <img 
-                src={RAINBET_LOGO}
-                alt="Rainbet" 
-                className="h-8 object-contain"
-              />
+            <div className="flex items-center space-x-4">
+              <a 
+                href="https://rainbet.com/?r=mariozip" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Play Now
+              </a>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm text-slate-400">Powered by</span>
+                <img 
+                  src={RAINBET_LOGO}
+                  alt="Rainbet" 
+                  className="h-8 object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -246,17 +256,23 @@ export default function LeaderboardPage() {
             <div>
               <h4 className="text-lg font-semibold text-slate-50 mb-4">Connect</h4>
               <div className="flex space-x-4">
-                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                <a href="https://x.com/mariozip7" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
                   <Twitter className="w-5 h-5" />
                 </a>
-                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                <a href="https://discord.gg/scsTmr55" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
                   <MessageCircle className="w-5 h-5" />
                 </a>
-                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                <a href="https://kick.com/mariozip" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
                   <Youtube className="w-5 h-5" />
                 </a>
-                <a href="#" className="social-link text-slate-400 hover:text-blue-400">
+                <a href="https://www.instagram.com/mariozip7/" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
                   <Instagram className="w-5 h-5" />
+                </a>
+              </div>
+              <div className="mt-4">
+                <a href="https://rainbet.com/?r=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                  <img src={RAINBET_LOGO} alt="Rainbet" className="w-4 h-4 object-contain" />
+                  <span>Play on Rainbet</span>
                 </a>
               </div>
             </div>
