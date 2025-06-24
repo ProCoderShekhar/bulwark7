@@ -30,7 +30,7 @@ export function getNextResetDate(): Date {
 }
 
 export function getPrizeForRank(rank: number): number {
-  const prizes = [10000, 6000, 4000, 2500, 1500, 1000, 500, 300, 200, 100];
+  const prizes = [150, 75, 50, 40, 30, 20, 20, 15];
   return prizes[rank - 1] || 0;
 }
 

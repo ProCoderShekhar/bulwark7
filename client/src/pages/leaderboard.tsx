@@ -8,8 +8,8 @@ import { AlertCircle, Twitter, MessageCircle, Youtube, Instagram, Trophy, Crown,
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import type { LeaderboardData } from '@shared/schema';
 
-const MARIOZIP_LOGO = "https://media.discordapp.net/attachments/1386288409823281172/1386483110518063206/895EF406-D865-4B53-97E6-156A6B337425.jpg?ex=6859de85&is=68588d05&hm=fa208b8338dc0ab7846ff8a40728b720bec96d5f6e3296f08f0c7cfc68bda28b&=&format=png";
-const RAINBET_LOGO = "https://media.discordapp.net/attachments/1386288409823281172/1386379643355140167/IMG_9629.jpg?ex=685a26e8&is=6858d568&hm=d7c48a18a565375e280cc3abc9554513d2664a79cd1b9be4ea03db4f17924779&=&format=png";
+const MARIOZIP_LOGO = "https://media.discordapp.net/attachments/1386288409823281172/1386483110518063206/895EF406-D865-4B53-97E6-156A6B337425.jpg";
+const RAINBET_LOGO = "https://media.discordapp.net/attachments/1386288409823281172/1386379643355140167/IMG_9629.jpg";
 
 export default function LeaderboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string>('');
@@ -82,11 +82,9 @@ export default function LeaderboardPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <img 
-                src={MARIOZIP_LOGO}
-                alt="MarioZip" 
-                className="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
-              />
+              <div className="w-12 h-12 rounded-full border-2 border-blue-500 bg-blue-600 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">MZ</span>
+              </div>
               <div>
                 <h1 className="text-xl font-bold text-slate-50">MarioZip</h1>
                 <p className="text-sm text-slate-400">Wager Competition</p>
@@ -104,11 +102,9 @@ export default function LeaderboardPage() {
               </a>
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-slate-400">Powered by</span>
-                <img 
-                  src={RAINBET_LOGO}
-                  alt="Rainbet" 
-                  className="h-8 object-contain"
-                />
+                <div className="px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg">
+                  <span className="text-white font-bold text-sm">RAINBET</span>
+                </div>
               </div>
             </div>
           </div>
@@ -147,7 +143,7 @@ export default function LeaderboardPage() {
             <div className="glass-card-hover rounded-2xl p-6 text-center">
               <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
               <div className="text-3xl font-bold prize-text mb-1">
-                {formatCurrency(leaderboardData?.totalPrizePool || 25000)}
+                {formatCurrency(leaderboardData?.totalPrizePool || 400)}
               </div>
               <p className="text-slate-400">Total Prize Pool</p>
             </div>
@@ -239,11 +235,9 @@ export default function LeaderboardPage() {
             {/* Brand */}
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <img 
-                  src={MARIOZIP_LOGO}
-                  alt="MarioZip" 
-                  className="w-10 h-10 rounded-full border border-blue-500/50 object-cover"
-                />
+                <div className="w-10 h-10 rounded-full border border-blue-500/50 bg-blue-600 flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">MZ</span>
+                </div>
                 <h4 className="text-xl font-bold text-slate-50">MarioZip</h4>
               </div>
               <p className="text-slate-400 leading-relaxed">
