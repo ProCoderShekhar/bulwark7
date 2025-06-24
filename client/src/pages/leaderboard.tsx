@@ -265,7 +265,7 @@ export default function LeaderboardPage() {
               </div>
               <div className="mt-4">
                 <a href="https://rainbet.com/?r=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
-                  <img src={RAINBET_LOGO} alt="Rainbet" className="w-4 h-4 object-contain" />
+                  <div className="w-4 h-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded"></div>
                   <span>Play on Rainbet</span>
                 </a>
               </div>
