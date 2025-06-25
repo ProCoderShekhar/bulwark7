@@ -8,8 +8,7 @@ import { AlertCircle, Twitter, MessageCircle, Youtube, Instagram, Trophy, Crown,
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import type { LeaderboardData } from '@shared/schema';
 
-const MARIOZIP_LOGO = "https://media.discordapp.net/attachments/1386288409823281172/1386483110518063206/895EF406-D865-4B53-97E6-156A6B337425.jpg";
-const RAINBET_LOGO = "https://media.discordapp.net/attachments/1386288409823281172/1386379643355140167/IMG_9629.jpg";
+// Using fallback branding elements for logos
 
 export default function LeaderboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string>('');
@@ -93,17 +92,17 @@ export default function LeaderboardPage() {
             
             <div className="flex items-center space-x-4">
               <a 
-                href="https://rainbet.com/?r=mariozip" 
+                href="https://roobet.com/?ref=mariozip" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+                className="px-6 py-2 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold rounded-lg transition-all transform hover:scale-105"
               >
                 Play Now
               </a>
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-slate-400">Powered by</span>
-                <div className="px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg">
-                  <span className="text-white font-bold text-sm">RAINBET</span>
+                <div className="px-3 py-1 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg">
+                  <span className="text-white font-bold text-sm">ROOBET</span>
                 </div>
               </div>
             </div>
@@ -143,7 +142,7 @@ export default function LeaderboardPage() {
             <div className="glass-card-hover rounded-2xl p-6 text-center">
               <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
               <div className="text-3xl font-bold prize-text mb-1">
-                {formatCurrency(leaderboardData?.totalPrizePool || 400)}
+                {formatCurrency(leaderboardData?.totalPrizePool || 1000)}
               </div>
               <p className="text-slate-400">Total Prize Pool</p>
             </div>
@@ -264,9 +263,9 @@ export default function LeaderboardPage() {
                 </a>
               </div>
               <div className="mt-4">
-                <a href="https://rainbet.com/?r=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
-                  <div className="w-4 h-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded"></div>
-                  <span>Play on Rainbet</span>
+                <a href="https://roobet.com/?ref=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-red-400 hover:text-red-300 transition-colors">
+                  <div className="w-4 h-4 bg-gradient-to-r from-red-600 to-orange-600 rounded"></div>
+                  <span>Play on Roobet</span>
                 </a>
               </div>
             </div>
@@ -279,16 +278,16 @@ export default function LeaderboardPage() {
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
                       ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
-                      : 'June 23 - July 23'
+                      : 'June 25 - July 25'
                     }
                   </span>
                 </p>
                 <p>
-                  Reset: <span className="text-slate-300">Monthly on 24th</span>
+                  Reset: <span className="text-slate-300">Monthly on 25th</span>
                 </p>
                 <p>
                   Prize Pool: <span className="text-blue-400 font-semibold">
-                    {formatCurrency(leaderboardData?.totalPrizePool || 25000)}
+                    {formatCurrency(leaderboardData?.totalPrizePool || 1000)}
                   </span>
                 </p>
               </div>
@@ -297,13 +296,76 @@ export default function LeaderboardPage() {
 
           <div className="border-t border-slate-800/50 mt-12 pt-8 text-center">
             <p className="text-slate-500 text-sm">
-              © 2024 MarioZip. All rights reserved. • 
-              <span className="text-blue-400"> Powered by Rainbet</span> • 
+              © 2025 MarioZip. All rights reserved. • 
+              <span className="text-red-400"> Powered by Roobet</span> • 
               Play responsibly. 18+
             </p>
           </div>
         </div>
       </footer>
+
+      {/* Rules Section */}
+      <section className="py-16 bg-slate-900/50">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-50 mb-4">Competition Rules</h2>
+            <p className="text-slate-400 text-lg">Understanding how your wagers count towards the leaderboard</p>
+          </div>
+
+          <div className="glass-card rounded-2xl p-8">
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold text-slate-50 mb-4">Weighted Wager System</h3>
+                <p className="text-slate-300 mb-6">
+                  Your wagers on Roobet will count towards the leaderboard at the following weights based on the games you are playing. 
+                  This helps prevent leaderboard abuse:
+                </p>
+              </div>
+
+              <div className="grid gap-4">
+                <div className="flex items-center space-x-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div>
+                    <div className="font-semibold text-green-400">100% Weight</div>
+                    <div className="text-slate-300">Games with an RTP of 97% or less will contribute 100% of the amount wagered to the leaderboard.</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div>
+                    <div className="font-semibold text-yellow-400">50% Weight</div>
+                    <div className="text-slate-300">Games with an RTP above 97% will contribute 50% of the amount wagered to the leaderboard.</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div>
+                    <div className="font-semibold text-red-400">10% Weight</div>
+                    <div className="text-slate-300">Games with an RTP of 98% and above will contribute 10% of the amount wagered to the leaderboard.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <div className="font-semibold text-blue-400 mb-2">Important Notes</div>
+                    <ul className="text-slate-300 space-y-1">
+                      <li>• Only Slots and Housegames count (dice is excluded)</li>
+                      <li>• Leaderboard updates every 5 minutes</li>
+                      <li>• Competition runs from June 25th to July 25th</li>
+                      <li>• Monthly resets occur on the 25th of each month</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

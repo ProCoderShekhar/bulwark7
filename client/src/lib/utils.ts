@@ -22,15 +22,15 @@ export function getNextResetDate(): Date {
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
   
-  if (now.getDate() < 23) {
-    return new Date(currentYear, currentMonth, 23, 0, 0, 0);
+  if (now.getDate() < 25) {
+    return new Date(currentYear, currentMonth, 25, 0, 0, 0);
   } else {
-    return new Date(currentYear, currentMonth + 1, 23, 0, 0, 0);
+    return new Date(currentYear, currentMonth + 1, 25, 0, 0, 0);
   }
 }
 
 export function getPrizeForRank(rank: number): number {
-  const prizes = [150, 75, 50, 40, 30, 20, 20, 15];
+  const prizes = [400, 200, 150, 100, 50, 40, 20, 20, 10, 10];
   return prizes[rank - 1] || 0;
 }
 
