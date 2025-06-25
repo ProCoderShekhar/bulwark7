@@ -202,17 +202,70 @@ export default function LeaderboardPage() {
           {leaderboardData && (
             <>
               {/* Top 3 Podium */}
-              {leaderboardData.players.length >= 3 && (
+              {leaderboardData.players.length > 0 && (
                 <div className="mb-12">
                   <h3 className="text-xl font-bold text-slate-50 mb-6 text-center">Top Performers</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {leaderboardData.players.slice(0, 3).map((player) => (
-                      <LeaderboardCard 
-                        key={player.rank} 
-                        player={player} 
-                        isTopThree={true}
-                      />
-                    ))}
+                    {/* 2nd Place */}
+                    {leaderboardData.players[1] && (
+                      <div className="md:order-1 flex justify-center">
+                        <div className="w-full max-w-sm">
+                          <div className="glass-card border-slate-700/50 bg-gradient-to-br from-slate-800/40 to-slate-900/60 backdrop-blur-xl rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-xl hover:shadow-slate-400/10">
+                            <div className="text-center mb-4">
+                              <div className="relative inline-block">
+                                <Medal className="w-12 h-12 text-slate-400 mx-auto mb-2" />
+                                <div className="absolute -top-1 -right-1 w-6 h-6 bg-slate-600 rounded-full flex items-center justify-center text-xs font-bold text-white">2</div>
+                              </div>
+                              <h3 className="text-xl font-bold text-slate-200 mb-1">{leaderboardData.players[1].username}</h3>
+                              <p className="text-2xl font-bold text-slate-300">{formatCurrency(leaderboardData.players[1].totalWager)}</p>
+                              <p className="text-sm text-slate-500 mt-1">Prize: ${leaderboardData.players[1].prize}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 1st Place - Center */}
+                    {leaderboardData.players[0] && (
+                      <div className="md:order-2 flex justify-center">
+                        <div className="w-full max-w-sm">
+                          <div className="glass-card border-yellow-500/30 bg-gradient-to-br from-yellow-500/10 via-blue-600/20 to-blue-900/40 backdrop-blur-xl rounded-2xl p-8 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent rounded-2xl"></div>
+                            <div className="relative z-10 text-center mb-4">
+                              <div className="relative inline-block">
+                                <Crown className="w-16 h-16 text-yellow-400 mx-auto mb-3 drop-shadow-lg" />
+                                <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-sm font-bold text-black shadow-lg">1</div>
+                              </div>
+                              <h3 className="text-2xl font-bold text-yellow-300 mb-2">{leaderboardData.players[0].username}</h3>
+                              <p className="text-3xl font-bold text-white mb-1">{formatCurrency(leaderboardData.players[0].totalWager)}</p>
+                              <p className="text-lg text-yellow-200 font-semibold">Prize: ${leaderboardData.players[0].prize}</p>
+                              <div className="mt-3 px-4 py-1 bg-yellow-500/20 rounded-full">
+                                <span className="text-sm text-yellow-300 font-medium">👑 CHAMPION</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 3rd Place */}
+                    {leaderboardData.players[2] && (
+                      <div className="md:order-3 flex justify-center">
+                        <div className="w-full max-w-sm">
+                          <div className="glass-card border-slate-700/50 bg-gradient-to-br from-slate-800/40 to-slate-900/60 backdrop-blur-xl rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-xl hover:shadow-slate-400/10">
+                            <div className="text-center mb-4">
+                              <div className="relative inline-block">
+                                <Medal className="w-12 h-12 text-amber-600 mx-auto mb-2" />
+                                <div className="absolute -top-1 -right-1 w-6 h-6 bg-amber-700 rounded-full flex items-center justify-center text-xs font-bold text-white">3</div>
+                              </div>
+                              <h3 className="text-xl font-bold text-slate-200 mb-1">{leaderboardData.players[2].username}</h3>
+                              <p className="text-2xl font-bold text-slate-300">{formatCurrency(leaderboardData.players[2].totalWager)}</p>
+                              <p className="text-sm text-slate-500 mt-1">Prize: ${leaderboardData.players[2].prize}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

@@ -107,12 +107,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Transform API data to leaderboard format
       const players = (Array.isArray(apiData) ? apiData : [])
-        .map((player: any, index: number) => ({
-          username: (player.username || `Player${index + 1}`).substring(0, 3),
-          totalWager: parseFloat(player.weightedWagered || player.wagered || 0),
-          rank: index + 1,
-          prize: PRIZE_STRUCTURE[index] || 0
-        }))
+        .map((player: any, index: number) => {
+          const originalUsername = player.username || `Player${index + 1}`;
+          const maskedUsername = originalUsername.substring(0, 3) + '*'.repeat(Math.max(0, originalUsername.length - 3));
+          return {
+            username: maskedUsername,
+            totalWager: parseFloat(player.weightedWagered || player.wagered || 0),
+            rank: index + 1,
+            prize: PRIZE_STRUCTURE[index] || 0
+          };
+        })
         .sort((a, b) => b.totalWager - a.totalWager)
         .slice(0, 50); // Limit to top 50
 
