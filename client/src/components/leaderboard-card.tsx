@@ -60,21 +60,21 @@ export function LeaderboardCard({ player, isTopThree = false }: LeaderboardCardP
 
   if (isTopThree) {
     return (
-      <div className={`glass-card-hover rounded-2xl p-8 border-2 ${rankStyle.border} ${rankStyle.glow} shadow-2xl`}>
+      <div className={`glass-card-hover rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border-2 ${rankStyle.border} ${rankStyle.glow} shadow-2xl`}>
         <div className="text-center">
-          <div className="rank-badge w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+          <div className="rank-badge w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6 text-lg sm:text-xl lg:text-2xl">
             {getRankIcon(player.rank)}
           </div>
-          <h4 className={`text-2xl font-bold mb-3 ${rankStyle.text}`}>
+          <h4 className={`text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 ${rankStyle.text}`}>
             {player.username}
           </h4>
-          <div className="text-4xl font-bold prize-text mb-3">
+          <div className="text-2xl sm:text-3xl lg:text-4xl font-bold prize-text mb-2 sm:mb-3">
             {formatCurrency(player.totalWager)}
           </div>
-          <div className="text-sm text-slate-400">
+          <div className="text-xs sm:text-sm text-slate-400">
             Prize: <span className="text-blue-400 font-semibold">{formatCurrency(player.prize)}</span>
           </div>
-          <div className="mt-4 pt-4 border-t border-slate-700/50">
+          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-700/50">
             <span className="text-xs text-slate-500 uppercase tracking-wider">
               {player.rank}{getRankSuffix(player.rank)} Place
             </span>
@@ -85,26 +85,26 @@ export function LeaderboardCard({ player, isTopThree = false }: LeaderboardCardP
   }
 
   return (
-    <div className="glass-card-hover rounded-xl p-6">
+    <div className="glass-card-hover rounded-lg sm:rounded-xl p-4 sm:p-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-6">
-          <div className="rank-badge w-14 h-14 rounded-full flex items-center justify-center text-lg">
+        <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+          <div className="rank-badge w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-sm sm:text-base lg:text-lg">
             {getRankIcon(player.rank)}
           </div>
           <div>
-            <h4 className="text-xl font-bold text-slate-50 mb-1">
+            <h4 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50 mb-1">
               {player.username}
             </h4>
-            <p className="text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-400">
               {player.rank}{getRankSuffix(player.rank)} Place
             </p>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-slate-50 mb-1">
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-50 mb-1">
             {formatCurrency(player.totalWager)}
           </div>
-          <div className="text-sm text-slate-400">
+          <div className="text-xs sm:text-sm text-slate-400">
             Prize: <span className="text-blue-400 font-semibold">{formatCurrency(player.prize)}</span>
           </div>
         </div>
