@@ -3,58 +3,107 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import type { LeaderboardData, RoobetApiResponse } from "@shared/schema";
+import axios from "axios";
 
 const ROOBET_API_CONFIG = {
-  endpoint: 'https://api.roobet.com/v1/affiliate/stats',
-  uid: '2c7f6672-fd92-479b-9033-9739d913d374',
+  endpoint: 'https://roobetconnect.com/affiliate/v2/stats',
+  userId: '2c7f6672-fd92-479b-9033-9739d913d374',
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJjN2Y2NjcyLWZkOTItNDc5Yi05MDMzLTk3MzlkOTEzZDM3NCIsIm5vbmNlIjoiMGIxNmYxM2ItYzY1Ny00Mzg2LTg5MWMtZTBiZTMwM2U5OTVjIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzUwODAzNzU0fQ.MM85GRm9fPJ2s_q1e37aWH-BIOhVCuW01nOgFW6-g4E'
 };
+
+// Helper function to get current competition dates (25th to 25th)
+function getCompetitionDates() {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth(); // 0-based
+  const currentDay = now.getDate();
+  
+  let startDate: Date;
+  let endDate: Date;
+  
+  if (currentDay >= 25) {
+    // Current competition period: 25th of current month to 25th of next month
+    startDate = new Date(currentYear, currentMonth, 25);
+    endDate = new Date(currentYear, currentMonth + 1, 25);
+  } else {
+    // Current competition period: 25th of previous month to 25th of current month
+    startDate = new Date(currentYear, currentMonth - 1, 25);
+    endDate = new Date(currentYear, currentMonth, 25);
+  }
+  
+  // Format as YYYY-MM-DD for API
+  const formatDate = (date: Date) => {
+    return date.toISOString().split('T')[0];
+  };
+  
+  return {
+    startDate: formatDate(startDate),
+    endDate: formatDate(endDate)
+  };
+}
 
 const PRIZE_STRUCTURE = [
   400, 200, 150, 100, 50, 40, 20, 20, 10, 10
 ];
+
+// Cache for leaderboard data
+let cachedLeaderboardData: LeaderboardData | null = null;
+let lastFetchTime: number = 0;
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+
+// Function to fetch affiliate stats from Roobet API
+async function fetchAffiliateStats(): Promise<any> {
+  const { startDate, endDate } = getCompetitionDates();
+  
+  console.log(`Fetching Roobet data for period: ${startDate} to ${endDate}`);
+  
+  try {
+    const response = await axios.get(ROOBET_API_CONFIG.endpoint, {
+      params: {
+        userId: ROOBET_API_CONFIG.userId,
+        startDate,
+        endDate
+      },
+      headers: {
+        Authorization: `Bearer ${ROOBET_API_CONFIG.token}`,
+        'Content-Type': 'application/json'
+      },
+      timeout: 10000 // 10 second timeout
+    });
+
+    console.log('Roobet API Response:', response.data);
+    return response.data;
+  } catch (error: any) {
+    if (error.code === 'ECONNABORTED') {
+      console.error('Roobet API request timed out');
+    } else if (error.response) {
+      console.error('Roobet API error:', error.response.status, error.response.data);
+    } else {
+      console.error('Roobet API request failed:', error.message);
+    }
+    throw error;
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Get current leaderboard data
   app.get("/api/leaderboard", async (req, res) => {
     try {
+      const now = Date.now();
+      
+      // Return cached data if it's still fresh
+      if (cachedLeaderboardData && (now - lastFetchTime) < CACHE_DURATION) {
+        return res.json(cachedLeaderboardData);
+      }
+
       const competition = await storage.getCurrentCompetition();
       if (!competition) {
         return res.status(404).json({ message: "No active competition found" });
       }
 
-      // Calculate date range for API call
-      const startDate = competition.startDate.toISOString().split('T')[0];
-      const endDate = competition.endDate.toISOString().split('T')[0];
-
-      // Fetch data from Roobet API with timeout
-      const params = new URLSearchParams({
-        uid: ROOBET_API_CONFIG.uid,
-        start_date: startDate,
-        end_date: endDate,
-        limit: '100'
-      });
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-      const response = await fetch(`${ROOBET_API_CONFIG.endpoint}?${params}`, {
-        signal: controller.signal,
-        headers: {
-          'Authorization': `Bearer ${ROOBET_API_CONFIG.token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) {
-        throw new Error(`Roobet API error: ${response.status} ${response.statusText}`);
-      }
-
-      const apiData = await response.json();
+      // Fetch fresh data from Roobet API
+      const apiData = await fetchAffiliateStats();
       
       // Transform API data to leaderboard format
       const players = (apiData.players || [])
@@ -82,6 +131,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         totalPlayers: players.length,
         lastUpdated: new Date().toISOString()
       };
+
+      // Cache the data
+      cachedLeaderboardData = leaderboardData;
+      lastFetchTime = now;
 
       res.json(leaderboardData);
       
