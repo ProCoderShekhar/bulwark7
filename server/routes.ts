@@ -2,15 +2,16 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
-import type { LeaderboardData, RainbetApiResponse } from "@shared/schema";
+import type { LeaderboardData, RoobetApiResponse } from "@shared/schema";
 
-const RAINBET_API_CONFIG = {
-  endpoint: 'https://services.rainbet.com/v1/external/affiliates',
-  key: process.env.RAINBET_API_KEY || '78SuhSk2KCMU3S9SRdwdxPBRhSinbNys'
+const ROOBET_API_CONFIG = {
+  endpoint: 'https://api.roobet.com/v1/affiliate/stats',
+  uid: '2c7f6672-fd92-479b-9033-9739d913d374',
+  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJjN2Y2NjcyLWZkOTItNDc5Yi05MDMzLTk3MzlkOTEzZDM3NCIsIm5vbmNlIjoiMGIxNmYxM2ItYzY1Ny00Mzg2LTg5MWMtZTBiZTMwM2U5OTVjIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzUwODAzNzU0fQ.MM85GRm9fPJ2s_q1e37aWH-BIOhVCuW01nOgFW6-g4E'
 };
 
 const PRIZE_STRUCTURE = [
-  150, 75, 50, 40, 30, 20, 20, 15
+  400, 200, 150, 100, 50, 40, 20, 20, 10, 10
 ];
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -27,20 +28,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const startDate = competition.startDate.toISOString().split('T')[0];
       const endDate = competition.endDate.toISOString().split('T')[0];
 
-      // Fetch data from Rainbet API with timeout
+      // Fetch data from Roobet API with timeout
       const params = new URLSearchParams({
-        start_at: startDate,
-        end_at: endDate,
-        key: RAINBET_API_CONFIG.key
+        uid: ROOBET_API_CONFIG.uid,
+        start_date: startDate,
+        end_date: endDate,
+        limit: '100'
       });
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-      const response = await fetch(`${RAINBET_API_CONFIG.endpoint}?${params}`, {
+      const response = await fetch(`${ROOBET_API_CONFIG.endpoint}?${params}`, {
         signal: controller.signal,
         headers: {
-          'User-Agent': 'MarioZip-Leaderboard/1.0',
+          'Authorization': `Bearer ${ROOBET_API_CONFIG.token}`,
+          'Content-Type': 'application/json',
           'Accept': 'application/json'
         }
       });
@@ -48,7 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       clearTimeout(timeoutId);
       
       if (!response.ok) {
-        throw new Error(`Rainbet API error: ${response.status} ${response.statusText}`);
+        throw new Error(`Roobet API error: ${response.status} ${response.statusText}`);
       }
 
       const apiData = await response.json();
@@ -97,7 +100,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             rank: entry.rank,
             prize: PRIZE_STRUCTURE[entry.rank - 1] || 0
           })),
-          totalPrizePool: competition ? parseFloat(competition.totalPrizePool) : 25000,
+          totalPrizePool: competition ? parseFloat(competition.totalPrizePool) : 1000,
           totalPlayers: cachedEntries.length,
           lastUpdated: cachedEntries[0]?.lastUpdated?.toISOString() || new Date().toISOString()
         };
@@ -107,16 +110,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Final fallback with demo data
         const demoData: LeaderboardData = {
           players: [
-            { username: "CryptoKing", totalWager: 125000, rank: 1, prize: 150 },
-            { username: "SlotMaster", totalWager: 98500, rank: 2, prize: 75 },
-            { username: "LuckyPlayer", totalWager: 87200, rank: 3, prize: 50 },
-            { username: "BetBeast", totalWager: 76800, rank: 4, prize: 40 },
-            { username: "WagerWolf", totalWager: 65400, rank: 5, prize: 30 },
-            { username: "RollRoyce", totalWager: 54300, rank: 6, prize: 20 },
+            { username: "CryptoKing", totalWager: 125000, rank: 1, prize: 400 },
+            { username: "SlotMaster", totalWager: 98500, rank: 2, prize: 200 },
+            { username: "LuckyPlayer", totalWager: 87200, rank: 3, prize: 150 },
+            { username: "BetBeast", totalWager: 76800, rank: 4, prize: 100 },
+            { username: "WagerWolf", totalWager: 65400, rank: 5, prize: 50 },
+            { username: "RollRoyce", totalWager: 54300, rank: 6, prize: 40 },
             { username: "SpinStar", totalWager: 43200, rank: 7, prize: 20 },
-            { username: "CashCow", totalWager: 32100, rank: 8, prize: 15 }
+            { username: "CashCow", totalWager: 32100, rank: 8, prize: 20 }
           ],
-          totalPrizePool: 400,
+          totalPrizePool: 1000,
           totalPlayers: 8,
           lastUpdated: new Date().toISOString()
         };
@@ -167,7 +170,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const newCompetition = await storage.createCompetition({
         startDate: now,
         endDate: nextMonth,
-        totalPrizePool: "25000",
+        totalPrizePool: "1000",
         isActive: "true"
       });
 

@@ -56,7 +56,7 @@ export class MemStorage implements IStorage {
       id: this.currentCompetitionId++,
       startDate,
       endDate,
-      totalPrizePool: "400",
+      totalPrizePool: "1000",
       isActive: "true"
     };
     

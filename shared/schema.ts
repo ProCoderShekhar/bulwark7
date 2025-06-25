@@ -33,7 +33,7 @@ export type Competition = typeof competitions.$inferSelect;
 export type InsertCompetition = z.infer<typeof insertCompetitionSchema>;
 
 // API Response types
-export interface RainbetApiResponse {
+export interface RoobetApiResponse {
   success: boolean;
   data: {
     players: Array<{
