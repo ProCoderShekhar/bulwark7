@@ -106,13 +106,13 @@ export default function LeaderboardPage() {
                 href="https://roobet.com/?ref=mariozip" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-8 py-3 bg-gradient-to-r from-red-600 via-red-500 to-orange-500 hover:from-red-700 hover:via-red-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/25 glass-card-hover"
+                className="px-8 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-700 hover:via-blue-600 hover:to-cyan-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 glass-card-hover"
               >
                 🎰 Play Now
               </a>
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-slate-400">Powered by</span>
-                <div className="flex items-center space-x-2 px-3 py-1 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg">
+                <div className="flex items-center space-x-2 px-3 py-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg">
                   <img 
                     src={ROOBET_LOGO}
                     alt="Roobet" 
@@ -291,7 +291,7 @@ export default function LeaderboardPage() {
                 </a>
               </div>
               <div className="mt-4">
-                <a href="https://roobet.com/?ref=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-red-400 hover:text-red-300 transition-colors">
+                <a href="https://roobet.com/?ref=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
                   <img 
                     src={ROOBET_LOGO}
                     alt="Roobet" 
@@ -301,7 +301,7 @@ export default function LeaderboardPage() {
                       e.currentTarget.nextElementSibling.style.display = 'block';
                     }}
                   />
-                  <div className="w-4 h-4 bg-gradient-to-r from-red-600 to-orange-600 rounded" style={{display: 'none'}}></div>
+                  <div className="w-4 h-4 bg-gradient-to-r from-blue-600 to-cyan-600 rounded" style={{display: 'none'}}></div>
                   <span>Play on Roobet</span>
                 </a>
               </div>
@@ -408,7 +408,7 @@ export default function LeaderboardPage() {
           <div className="border-t border-slate-800/50 mt-8 pt-8 text-center space-y-2">
             <p className="text-slate-500 text-sm">
               © 2025 MarioZip. All rights reserved. • 
-              <span className="text-red-400"> Powered by Roobet</span> • 
+              <span className="text-blue-400"> Powered by Roobet</span> • 
               Play responsibly. 18+
             </p>
             <p className="text-slate-600 text-xs">
