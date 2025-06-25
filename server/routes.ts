@@ -118,7 +118,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           };
         })
         .sort((a, b) => b.totalWager - a.totalWager)
-        .slice(0, 50); // Limit to top 50
+        .slice(0, 10); // Limit to top 10
 
       // Update local storage with fresh data
       await storage.updateLeaderboardEntries(
