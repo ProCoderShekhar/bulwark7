@@ -430,43 +430,43 @@ export default function LeaderboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
             
             {/* Brand */}
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
+            <div className="text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start space-x-3 mb-3 sm:mb-4">
                 <img 
                   src={MARIOZIP_LOGO}
                   alt="MarioZip" 
-                  className="w-10 h-10 rounded-full border border-blue-500/50 object-cover"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-blue-500/50 object-cover"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.nextElementSibling.style.display = 'flex';
                   }}
                 />
-                <div className="w-10 h-10 rounded-full border border-blue-500/50 bg-blue-600 flex items-center justify-center" style={{display: 'none'}}>
-                  <span className="text-white font-bold text-sm">MZ</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-blue-500/50 bg-blue-600 flex items-center justify-center" style={{display: 'none'}}>
+                  <span className="text-white font-bold text-xs sm:text-sm">MZ</span>
                 </div>
-                <h4 className="text-xl font-bold text-slate-50">MarioZip</h4>
+                <h4 className="text-lg sm:text-xl font-bold text-slate-50">MarioZip</h4>
               </div>
-              <p className="text-slate-400 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
                 The premier destination for competitive wagering. 
                 Join thousands of players competing for substantial prizes.
               </p>
             </div>
 
             {/* Social Links */}
-            <div>
-              <h4 className="text-lg font-semibold text-slate-50 mb-4">Connect</h4>
-              <div className="flex space-x-4">
+            <div className="text-center sm:text-left">
+              <h4 className="text-base sm:text-lg font-semibold text-slate-50 mb-3 sm:mb-4">Connect</h4>
+              <div className="flex justify-center sm:justify-start space-x-4">
                 <a href="https://x.com/mariozip7" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
-                  <Twitter className="w-5 h-5" />
+                  <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
                 <a href="https://discord.gg/scsTmr55" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
-                  <MessageCircle className="w-5 h-5" />
+                  <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
                 <a href="https://kick.com/mariozip" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
-                  <Youtube className="w-5 h-5" />
+                  <Youtube className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
                 <a href="https://www.instagram.com/mariozip7/" target="_blank" rel="noopener noreferrer" className="social-link text-slate-400 hover:text-blue-400">
-                  <Instagram className="w-5 h-5" />
+                  <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
               </div>
               <div className="mt-4">
@@ -487,9 +487,9 @@ export default function LeaderboardPage() {
             </div>
 
             {/* Competition Info */}
-            <div>
-              <h4 className="text-lg font-semibold text-slate-50 mb-4">Competition</h4>
-              <div className="space-y-2 text-sm text-slate-400">
+            <div className="text-center sm:text-left lg:col-span-1">
+              <h4 className="text-base sm:text-lg font-semibold text-slate-50 mb-3 sm:mb-4">Competition</h4>
+              <div className="space-y-2 text-xs sm:text-sm text-slate-400">
                 <p>
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
@@ -511,13 +511,13 @@ export default function LeaderboardPage() {
           </div>
 
           {/* Rules Section - Collapsible */}
-          <div className="border-t border-slate-800/50 mt-12 pt-8">
+          <div className="border-t border-slate-800/50 mt-8 sm:mt-10 lg:mt-12 pt-6 sm:pt-8">
             <div className="max-w-4xl mx-auto">
               <button
                 onClick={() => setShowRules(!showRules)}
-                className="w-full flex items-center justify-between p-4 glass-card rounded-lg hover:bg-slate-800/30 transition-colors"
+                className="w-full flex items-center justify-between p-3 sm:p-4 glass-card rounded-lg hover:bg-slate-800/30 transition-colors"
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 sm:space-x-3">
                   <AlertCircle className="w-5 h-5 text-blue-400" />
                   <h3 className="text-lg font-semibold text-slate-50">Competition Rules & Weighted Wager System</h3>
                 </div>
