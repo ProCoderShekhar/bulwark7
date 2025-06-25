@@ -405,11 +405,21 @@ export default function LeaderboardPage() {
             </div>
           </div>
 
-          <div className="border-t border-slate-800/50 mt-8 pt-8 text-center">
+          <div className="border-t border-slate-800/50 mt-8 pt-8 text-center space-y-2">
             <p className="text-slate-500 text-sm">
               © 2025 MarioZip. All rights reserved. • 
               <span className="text-red-400"> Powered by Roobet</span> • 
               Play responsibly. 18+
+            </p>
+            <p className="text-slate-600 text-xs">
+              <a 
+                href="https://nobitadev.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-blue-400 transition-colors cursor-pointer"
+              >
+                Made with 💗 by Nobita
+              </a>
             </p>
           </div>
         </div>
