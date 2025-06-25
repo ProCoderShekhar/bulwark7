@@ -42,14 +42,14 @@ export class MemStorage implements IStorage {
     let startDate: Date;
     let endDate: Date;
     
-    if (now.getDate() >= 23) {
-      // Current period: 23rd of current month to 23rd of next month
-      startDate = new Date(currentYear, currentMonth, 23);
-      endDate = new Date(currentYear, currentMonth + 1, 23);
+    if (now.getDate() >= 25) {
+      // Current period: 25th of current month to 25th of next month
+      startDate = new Date(currentYear, currentMonth, 25);
+      endDate = new Date(currentYear, currentMonth + 1, 25);
     } else {
-      // Current period: 23rd of previous month to 23rd of current month
-      startDate = new Date(currentYear, currentMonth - 1, 23);
-      endDate = new Date(currentYear, currentMonth, 23);
+      // Current period: 25th of previous month to 25th of current month
+      startDate = new Date(currentYear, currentMonth - 1, 25);
+      endDate = new Date(currentYear, currentMonth, 25);
     }
     
     const competition: Competition = {

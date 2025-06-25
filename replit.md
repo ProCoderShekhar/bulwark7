@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application that displays a competitive leaderboard for gambling wagering data sourced from the Rainbet API. The application features a modern React frontend with a professional blue metallic theme, an Express.js backend, and PostgreSQL database integration using Drizzle ORM. The leaderboard runs monthly competitions from the 23rd of each month to the 23rd of the following month, displaying player rankings based on total wager amounts with corresponding prize structures.
+This is a full-stack web application that displays a competitive leaderboard for gambling wagering data sourced from the Roobet API. The application features a modern React frontend with a professional blue metallic theme, an Express.js backend, and PostgreSQL database integration using Drizzle ORM. The leaderboard runs monthly competitions from the 25th of each month to the 25th of the following month, displaying player rankings based on weighted wager amounts with corresponding prize structures.
 
 ## System Architecture
 
@@ -47,8 +47,8 @@ This is a full-stack web application that displays a competitive leaderboard for
 
 ## Data Flow
 
-1. **Competition Management**: System automatically determines active competition periods based on monthly cycles (23rd to 23rd)
-2. **Data Fetching**: Backend periodically fetches wagering data from Rainbet API using date range parameters
+1. **Competition Management**: System automatically determines active competition periods based on monthly cycles (25th to 25th)  
+2. **Data Fetching**: Backend periodically fetches wagering data from Roobet API using date range parameters
 3. **Data Processing**: Raw API data is transformed, ranked, and stored with prize calculations
 4. **Frontend Updates**: React Query manages real-time data synchronization with 30-second refresh intervals
 5. **User Interface**: Leaderboard displays with rank-specific styling, countdown timers, and responsive design
@@ -56,9 +56,9 @@ This is a full-stack web application that displays a competitive leaderboard for
 ## External Dependencies
 
 ### API Integration
-- **Rainbet API**: External gambling platform API for wagering data
-  - Endpoint: `https://services.rainbet.com/v1/external/affiliates`
-  - Authentication: API key-based authentication
+- **Roobet API**: External gambling platform API for wagering data  
+  - Endpoint: `https://api.roobet.com/v1/affiliate/stats`
+  - Authentication: JWT token-based authentication
   - Rate Limiting: Built-in timeout controls (10-second limit)
 
 ### Third-Party Services
@@ -93,7 +93,12 @@ This is a full-stack web application that displays a competitive leaderboard for
 
 ```
 Changelog:
-- June 25, 2025. Initial setup
+- June 25, 2025. Initial setup with Rainbet API
+- June 25, 2025. Switched to Roobet API integration
+- June 25, 2025. Updated prize structure: $1000 total pool (400/200/150/100/50/40/20/20/10/10)
+- June 25, 2025. Added weighted wager system based on RTP percentages
+- June 25, 2025. Competition dates changed to 25th-25th monthly cycle
+- June 25, 2025. Added comprehensive rules section
 ```
 
 ## User Preferences
