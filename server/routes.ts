@@ -106,19 +106,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const apiData = await fetchAffiliateStats();
       
       // Transform API data to leaderboard format
-      const players = (Array.isArray(apiData) ? apiData : [])
+      const allPlayers = (Array.isArray(apiData) ? apiData : [])
+        .map((player: any) => ({
+          username: player.username || 'Unknown',
+          totalWager: parseFloat(player.weightedWagered || player.wagered || 0)
+        }))
+        .sort((a, b) => b.totalWager - a.totalWager);
+
+      // Get top 10 for display with correct rankings and prizes
+      const players = allPlayers
+        .slice(0, 10)
         .map((player: any, index: number) => {
-          const originalUsername = player.username || `Player${index + 1}`;
+          const originalUsername = player.username;
           const maskedUsername = originalUsername.substring(0, 3) + '*'.repeat(Math.max(0, originalUsername.length - 3));
           return {
             username: maskedUsername,
-            totalWager: parseFloat(player.weightedWagered || player.wagered || 0),
+            totalWager: player.totalWager,
             rank: index + 1,
             prize: PRIZE_STRUCTURE[index] || 0
           };
-        })
-        .sort((a, b) => b.totalWager - a.totalWager)
-        .slice(0, 10); // Limit to top 10
+        });
 
       // Update local storage with fresh data
       await storage.updateLeaderboardEntries(
@@ -132,7 +139,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const leaderboardData: LeaderboardData = {
         players,
         totalPrizePool: parseFloat(competition.totalPrizePool),
-        totalPlayers: players.length,
+        totalPlayers: allPlayers.length, // Show total active players from API
         lastUpdated: new Date().toISOString()
       };
 
