@@ -4,14 +4,16 @@ import { CountdownTimer } from '@/components/countdown-timer';
 import { LeaderboardCard } from '@/components/leaderboard-card';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, Twitter, MessageCircle, Youtube, Instagram, Trophy, Crown, Medal, TrendingUp, Clock, Users } from 'lucide-react';
+import { AlertCircle, Twitter, MessageCircle, Youtube, Instagram, Trophy, Crown, Medal, TrendingUp, Clock, Users, ChevronDown, ChevronUp } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import type { LeaderboardData } from '@shared/schema';
 
-// Using fallback branding elements for logos
+const MARIOZIP_LOGO = "https://i.ibb.co/gZHh6BV3/895-EF406-D865-4-B53-97-E6-156-A6-B337425.png";
+const ROOBET_LOGO = "https://i.ibb.co/C3Jq2wJB/IMG-9399.png";
 
 export default function LeaderboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [showRules, setShowRules] = useState(false);
 
   const { 
     data: leaderboardData, 
@@ -81,7 +83,16 @@ export default function LeaderboardPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 rounded-full border-2 border-blue-500 bg-blue-600 flex items-center justify-center">
+              <img 
+                src={MARIOZIP_LOGO}
+                alt="MarioZip" 
+                className="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                }}
+              />
+              <div className="w-12 h-12 rounded-full border-2 border-blue-500 bg-blue-600 flex items-center justify-center" style={{display: 'none'}}>
                 <span className="text-white font-bold text-lg">MZ</span>
               </div>
               <div>
@@ -95,13 +106,21 @@ export default function LeaderboardPage() {
                 href="https://roobet.com/?ref=mariozip" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-6 py-2 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold rounded-lg transition-all transform hover:scale-105"
+                className="px-8 py-3 bg-gradient-to-r from-red-600 via-red-500 to-orange-500 hover:from-red-700 hover:via-red-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/25 glass-card-hover"
               >
-                Play Now
+                🎰 Play Now
               </a>
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-slate-400">Powered by</span>
-                <div className="px-3 py-1 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg">
+                <div className="flex items-center space-x-2 px-3 py-1 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg">
+                  <img 
+                    src={ROOBET_LOGO}
+                    alt="Roobet" 
+                    className="w-5 h-5 rounded-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
                   <span className="text-white font-bold text-sm">ROOBET</span>
                 </div>
               </div>
@@ -234,7 +253,16 @@ export default function LeaderboardPage() {
             {/* Brand */}
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 rounded-full border border-blue-500/50 bg-blue-600 flex items-center justify-center">
+                <img 
+                  src={MARIOZIP_LOGO}
+                  alt="MarioZip" 
+                  className="w-10 h-10 rounded-full border border-blue-500/50 object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="w-10 h-10 rounded-full border border-blue-500/50 bg-blue-600 flex items-center justify-center" style={{display: 'none'}}>
                   <span className="text-white font-bold text-sm">MZ</span>
                 </div>
                 <h4 className="text-xl font-bold text-slate-50">MarioZip</h4>
@@ -264,7 +292,16 @@ export default function LeaderboardPage() {
               </div>
               <div className="mt-4">
                 <a href="https://roobet.com/?ref=mariozip" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 text-sm text-red-400 hover:text-red-300 transition-colors">
-                  <div className="w-4 h-4 bg-gradient-to-r from-red-600 to-orange-600 rounded"></div>
+                  <img 
+                    src={ROOBET_LOGO}
+                    alt="Roobet" 
+                    className="w-4 h-4 rounded-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="w-4 h-4 bg-gradient-to-r from-red-600 to-orange-600 rounded" style={{display: 'none'}}></div>
                   <span>Play on Roobet</span>
                 </a>
               </div>
@@ -294,7 +331,81 @@ export default function LeaderboardPage() {
             </div>
           </div>
 
-          <div className="border-t border-slate-800/50 mt-12 pt-8 text-center">
+          {/* Rules Section - Collapsible */}
+          <div className="border-t border-slate-800/50 mt-12 pt-8">
+            <div className="max-w-4xl mx-auto">
+              <button
+                onClick={() => setShowRules(!showRules)}
+                className="w-full flex items-center justify-between p-4 glass-card rounded-lg hover:bg-slate-800/30 transition-colors"
+              >
+                <div className="flex items-center space-x-3">
+                  <AlertCircle className="w-5 h-5 text-blue-400" />
+                  <h3 className="text-lg font-semibold text-slate-50">Competition Rules & Weighted Wager System</h3>
+                </div>
+                {showRules ? (
+                  <ChevronUp className="w-5 h-5 text-slate-400" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-slate-400" />
+                )}
+              </button>
+
+              {showRules && (
+                <div className="mt-4 glass-card rounded-lg p-6 animate-in slide-in-from-top-2 duration-300">
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-slate-300 mb-6">
+                        Your wagers on Roobet will count towards the leaderboard at the following weights based on the games you are playing. 
+                        This helps prevent leaderboard abuse:
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3">
+                      <div className="flex items-center space-x-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <div>
+                          <div className="font-semibold text-green-400 text-sm">100% Weight</div>
+                          <div className="text-slate-300 text-sm">Games with an RTP of 97% or less will contribute 100% of the amount wagered to the leaderboard.</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div>
+                          <div className="font-semibold text-yellow-400 text-sm">50% Weight</div>
+                          <div className="text-slate-300 text-sm">Games with an RTP above 97% will contribute 50% of the amount wagered to the leaderboard.</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div>
+                          <div className="font-semibold text-red-400 text-sm">10% Weight</div>
+                          <div className="text-slate-300 text-sm">Games with an RTP of 98% and above will contribute 10% of the amount wagered to the leaderboard.</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                      <div className="flex items-start space-x-3">
+                        <AlertCircle className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <div className="font-semibold text-blue-400 mb-2 text-sm">Important Notes</div>
+                          <ul className="text-slate-300 space-y-1 text-sm">
+                            <li>• Only Slots and Housegames count (dice is excluded)</li>
+                            <li>• Leaderboard updates every 5 minutes</li>
+                            <li>• Competition runs from June 25th to July 25th</li>
+                            <li>• Monthly resets occur on the 25th of each month</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="border-t border-slate-800/50 mt-8 pt-8 text-center">
             <p className="text-slate-500 text-sm">
               © 2025 MarioZip. All rights reserved. • 
               <span className="text-red-400"> Powered by Roobet</span> • 
@@ -303,69 +414,6 @@ export default function LeaderboardPage() {
           </div>
         </div>
       </footer>
-
-      {/* Rules Section */}
-      <section className="py-16 bg-slate-900/50">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-50 mb-4">Competition Rules</h2>
-            <p className="text-slate-400 text-lg">Understanding how your wagers count towards the leaderboard</p>
-          </div>
-
-          <div className="glass-card rounded-2xl p-8">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold text-slate-50 mb-4">Weighted Wager System</h3>
-                <p className="text-slate-300 mb-6">
-                  Your wagers on Roobet will count towards the leaderboard at the following weights based on the games you are playing. 
-                  This helps prevent leaderboard abuse:
-                </p>
-              </div>
-
-              <div className="grid gap-4">
-                <div className="flex items-center space-x-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <div>
-                    <div className="font-semibold text-green-400">100% Weight</div>
-                    <div className="text-slate-300">Games with an RTP of 97% or less will contribute 100% of the amount wagered to the leaderboard.</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <div>
-                    <div className="font-semibold text-yellow-400">50% Weight</div>
-                    <div className="text-slate-300">Games with an RTP above 97% will contribute 50% of the amount wagered to the leaderboard.</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <div>
-                    <div className="font-semibold text-red-400">10% Weight</div>
-                    <div className="text-slate-300">Games with an RTP of 98% and above will contribute 10% of the amount wagered to the leaderboard.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                <div className="flex items-start space-x-3">
-                  <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <div className="font-semibold text-blue-400 mb-2">Important Notes</div>
-                    <ul className="text-slate-300 space-y-1">
-                      <li>• Only Slots and Housegames count (dice is excluded)</li>
-                      <li>• Leaderboard updates every 5 minutes</li>
-                      <li>• Competition runs from June 25th to July 25th</li>
-                      <li>• Monthly resets occur on the 25th of each month</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
