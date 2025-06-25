@@ -99,6 +99,9 @@ Changelog:
 - June 25, 2025. Added weighted wager system based on RTP percentages
 - June 25, 2025. Competition dates changed to 25th-25th monthly cycle
 - June 25, 2025. Added comprehensive rules section
+- June 25, 2025. Updated API integration to use axios with new roobetconnect.com endpoint
+- June 25, 2025. Implemented 15-minute cache refresh and automatic date setup
+- June 25, 2025. Successfully integrated live Roobet affiliate data with weighted wagering
 ```
 
 ## User Preferences

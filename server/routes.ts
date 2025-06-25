@@ -106,10 +106,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const apiData = await fetchAffiliateStats();
       
       // Transform API data to leaderboard format
-      const players = (apiData.players || [])
+      const players = (Array.isArray(apiData) ? apiData : [])
         .map((player: any, index: number) => ({
           username: player.username || `Player${index + 1}`,
-          totalWager: parseFloat(player.total_wager || 0),
+          totalWager: parseFloat(player.weightedWagered || player.wagered || 0),
           rank: index + 1,
           prize: PRIZE_STRUCTURE[index] || 0
         }))
