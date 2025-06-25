@@ -4,6 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent white flash on scroll */
+html, body {
+  background-color: #0f172a !important;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  background-color: #0f172a;
+  min-height: 100vh;
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -90,8 +107,9 @@
   body {
     @apply bg-slate-950 text-slate-50 antialiased;
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, rgb(2 6 23) 0%, rgb(15 23 42) 100%);
+    background: linear-gradient(135deg, rgb(2 6 23) 0%, rgb(15 23 42) 100%) !important;
     min-height: 100vh;
+    background-attachment: fixed;
   }
   
   html {
