@@ -14,6 +14,7 @@ const ROOBET_LOGO = "https://i.ibb.co/C3Jq2wJB/IMG-9399.png";
 export default function LeaderboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string>('');
   const [showRules, setShowRules] = useState(false);
+  const [rulesExpanded, setRulesExpanded] = useState(false);
 
   const { 
     data: leaderboardData, 
@@ -272,6 +273,7 @@ export default function LeaderboardPage() {
 
               {/* Full Rankings */}
               <div className="space-y-4">
+                {/* Existing players from API */}
                 {leaderboardData.players.slice(3).map((player) => (
                   <LeaderboardCard 
                     key={player.rank} 
@@ -279,6 +281,24 @@ export default function LeaderboardPage() {
                     isTopThree={false}
                   />
                 ))}
+                
+                {/* Placeholder entries to fill up to 10 total */}
+                {Array.from({ length: Math.max(0, 10 - leaderboardData.players.length) }, (_, index) => {
+                  const rank = leaderboardData.players.length + index + 1;
+                  const placeholderPlayer = {
+                    username: "---",
+                    totalWager: 0,
+                    rank: rank,
+                    prize: rank <= 10 ? [400, 200, 150, 100, 50, 40, 20, 20, 10, 10][rank - 1] : 0
+                  };
+                  return (
+                    <LeaderboardCard 
+                      key={`placeholder-${rank}`} 
+                      player={placeholderPlayer}
+                      isTopThree={false}
+                    />
+                  );
+                })}
               </div>
 
               {/* Empty State */}
@@ -295,6 +315,111 @@ export default function LeaderboardPage() {
               )}
             </>
           )}
+        </div>
+      </section>
+
+      {/* Rules Section */}
+      <section className="py-8">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="glass-card rounded-2xl p-8">
+            <button
+              onClick={() => setRulesExpanded(!rulesExpanded)}
+              className="w-full flex items-center justify-between text-left"
+            >
+              <h3 className="text-2xl font-bold text-slate-50">Competition Rules & Guidelines</h3>
+              {rulesExpanded ? (
+                <ChevronUp className="w-6 h-6 text-slate-400" />
+              ) : (
+                <ChevronDown className="w-6 h-6 text-slate-400" />
+              )}
+            </button>
+            
+            {rulesExpanded && (
+              <div className="mt-6 space-y-6 text-slate-300">
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3">📅 Competition Period</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Monthly competitions run from the 25th of each month to the 25th of the following month</li>
+                    <li>• Current competition: June 25, 2025 - July 25, 2025</li>
+                    <li>• Leaderboard resets automatically at the start of each new competition</li>
+                    <li>• Winners are announced within 48 hours of competition end</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3">🎮 Eligible Games & Weighted Wagering</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>• <strong>Slots & House Games Only:</strong> Only wagers on slots and house games count toward the leaderboard</li>
+                    <li>• <strong>RTP ≤ 97%:</strong> 100% weight (full wager amount counts)</li>
+                    <li>• <strong>RTP 97.01% - 97.99%:</strong> 50% weight (half wager amount counts)</li>
+                    <li>• <strong>RTP ≥ 98%:</strong> 10% weight (only 10% of wager amount counts)</li>
+                    <li>• Sports betting, live casino, and table games are excluded</li>
+                    <li>• Weighted wagering prevents abuse of high-RTP games</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3">🏆 Prize Structure</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+                    <div className="text-center p-3 bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 rounded-lg border border-yellow-500/30">
+                      <div className="font-bold text-yellow-400">1st Place</div>
+                      <div className="text-2xl font-bold text-white">$400</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-slate-400/20 to-slate-500/10 rounded-lg border border-slate-400/30">
+                      <div className="font-bold text-slate-300">2nd Place</div>
+                      <div className="text-xl font-bold text-white">$200</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-amber-600/20 to-amber-700/10 rounded-lg border border-amber-600/30">
+                      <div className="font-bold text-amber-400">3rd Place</div>
+                      <div className="text-xl font-bold text-white">$150</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-lg border border-blue-500/30">
+                      <div className="font-bold text-blue-400">4th Place</div>
+                      <div className="text-lg font-bold text-white">$100</div>
+                    </div>
+                    <div className="text-center p-3 bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 rounded-lg border border-cyan-500/30">
+                      <div className="font-bold text-cyan-400">5th Place</div>
+                      <div className="text-lg font-bold text-white">$50</div>
+                    </div>
+                  </div>
+                  <div className="mt-3 text-center text-sm text-slate-400">
+                    6th: $40 • 7th-8th: $20 each • 9th-10th: $10 each • Total Pool: $1,000
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3">📋 Rules & Fair Play</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>• One account per person - multi-accounting will result in disqualification</li>
+                    <li>• Minimum total wager of $100 required to qualify for prizes</li>
+                    <li>• All wagering must be done through the MarioZip referral link</li>
+                    <li>• Bonuses and promotional funds count toward wagering requirements</li>
+                    <li>• Disputes must be submitted within 7 days of competition end</li>
+                    <li>• MarioZip reserves the right to verify all wagering activity</li>
+                    <li>• Winners must respond within 14 days to claim prizes</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3">💰 Prize Distribution</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Prizes are distributed in cryptocurrency (Bitcoin or Ethereum)</li>
+                    <li>• Winners will be contacted via their registered Roobet email</li>
+                    <li>• Prize distribution typically occurs within 72 hours of verification</li>
+                    <li>• Minimum withdrawal amount may apply based on network fees</li>
+                    <li>• Tax responsibilities lie with the individual winner</li>
+                  </ul>
+                </div>
+
+                <div className="text-center pt-4 border-t border-slate-700">
+                  <p className="text-xs text-slate-500">
+                    By participating, you agree to these terms and conditions. 
+                    MarioZip promotes responsible gambling. Please play within your means.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
