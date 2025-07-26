@@ -18,15 +18,8 @@ export function formatNumber(num: number): string {
 }
 
 export function getNextResetDate(): Date {
-  const now = new Date();
-  const currentMonth = now.getMonth();
-  const currentYear = now.getFullYear();
-  
-  if (now.getDate() < 25) {
-    return new Date(currentYear, currentMonth, 25, 0, 0, 0);
-  } else {
-    return new Date(currentYear, currentMonth + 1, 25, 0, 0, 0);
-  }
+  // Fixed competition end date: August 26, 2025
+  return new Date(2025, 7, 26, 23, 59, 59); // August 26, 2025 11:59:59 PM
 }
 
 export function getPrizeForRank(rank: number): number {

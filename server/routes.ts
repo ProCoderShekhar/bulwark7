@@ -11,25 +11,11 @@ const ROOBET_API_CONFIG = {
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJjN2Y2NjcyLWZkOTItNDc5Yi05MDMzLTk3MzlkOTEzZDM3NCIsIm5vbmNlIjoiMGIxNmYxM2ItYzY1Ny00Mzg2LTg5MWMtZTBiZTMwM2U5OTVjIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzUwODAzNzU0fQ.MM85GRm9fPJ2s_q1e37aWH-BIOhVCuW01nOgFW6-g4E'
 };
 
-// Helper function to get current competition dates (25th to 25th)
+// Fixed competition dates: July 26 to August 26, 2025
 function getCompetitionDates() {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); // 0-based
-  const currentDay = now.getDate();
-  
-  let startDate: Date;
-  let endDate: Date;
-  
-  if (currentDay >= 25) {
-    // Current competition period: 25th of current month to 25th of next month
-    startDate = new Date(currentYear, currentMonth, 25);
-    endDate = new Date(currentYear, currentMonth + 1, 25);
-  } else {
-    // Current competition period: 25th of previous month to 25th of current month
-    startDate = new Date(currentYear, currentMonth - 1, 25);
-    endDate = new Date(currentYear, currentMonth, 25);
-  }
+  // Fixed competition period: July 26 to August 26, 2025
+  const startDate = new Date(2025, 6, 26); // July 26, 2025 (month is 0-based)
+  const endDate = new Date(2025, 7, 26);   // August 26, 2025
   
   // Format as YYYY-MM-DD for API
   const formatDate = (date: Date) => {
