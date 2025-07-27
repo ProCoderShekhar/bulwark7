@@ -18,8 +18,8 @@ export function formatNumber(num: number): string {
 }
 
 export function getNextResetDate(): Date {
-  // Fixed competition end date: August 26, 2025
-  return new Date(2025, 7, 26, 23, 59, 59); // August 26, 2025 11:59:59 PM
+  // Fixed competition end date: August 25, 2025
+  return new Date(2025, 7, 25, 23, 59, 59); // August 25, 2025 11:59:59 PM
 }
 
 export function getPrizeForRank(rank: number): number {

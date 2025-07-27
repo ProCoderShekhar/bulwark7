@@ -341,7 +341,7 @@ export default function LeaderboardPage() {
                   <h4 className="text-lg font-semibold text-blue-400 mb-3">📅 Competition Period</h4>
                   <ul className="space-y-2 text-sm">
                     <li>• Monthly competitions run from the 25th of each month to the 25th of the following month</li>
-                    <li>• Current competition: June 25, 2025 - July 25, 2025</li>
+                    <li>• Current competition: July 25, 2025 - August 25, 2025</li>
                     <li>• Leaderboard resets automatically at the start of each new competition</li>
                     <li>• Winners are announced within 48 hours of competition end</li>
                   </ul>
@@ -350,7 +350,7 @@ export default function LeaderboardPage() {
                 <div>
                   <h4 className="text-lg font-semibold text-blue-400 mb-3">🎮 Eligible Games & Weighted Wagering</h4>
                   <ul className="space-y-2 text-sm">
-                    <li>• <strong>Slots & House Games Only:</strong> Only wagers on slots and house games count toward the leaderboard</li>
+                    <li>• <strong>Slot & House Games Only:</strong> Only wagers on slots and house games count towards the leaderboard (Dice is excluded)</li>
                     <li>• <strong>RTP ≤ 97%:</strong> 100% weight (full wager amount counts)</li>
                     <li>• <strong>RTP 97.01% - 97.99%:</strong> 50% weight (half wager amount counts)</li>
                     <li>• <strong>RTP ≥ 98%:</strong> 10% weight (only 10% of wager amount counts)</li>
