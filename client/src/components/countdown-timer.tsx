@@ -62,7 +62,7 @@ export function CountdownTimer({ targetDate, onReset }: CountdownTimerProps) {
         <div className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
           <Clock className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-red-400" />
           <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50">
-            July 25 - August 25 Competition
+            August 25 - September 25 Competition
           </h3>
         </div>
         <div className="text-center">
@@ -84,7 +84,7 @@ export function CountdownTimer({ targetDate, onReset }: CountdownTimerProps) {
       <div className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
         <Clock className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-blue-400" />
         <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50">
-          July 25 - August 25 Competition
+          August 25 - September 25 Competition
         </h3>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">

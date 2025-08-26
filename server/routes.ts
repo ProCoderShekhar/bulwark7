@@ -11,11 +11,11 @@ const ROOBET_API_CONFIG = {
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJjN2Y2NjcyLWZkOTItNDc5Yi05MDMzLTk3MzlkOTEzZDM3NCIsIm5vbmNlIjoiMGIxNmYxM2ItYzY1Ny00Mzg2LTg5MWMtZTBiZTMwM2U5OTVjIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzUwODAzNzU0fQ.MM85GRm9fPJ2s_q1e37aWH-BIOhVCuW01nOgFW6-g4E'
 };
 
-// Fixed competition dates: July 25 to August 25, 2025
+// Fixed competition dates: August 25 to September 25, 2025
 function getCompetitionDates() {
-  // Fixed competition period: July 25 to August 25, 2025
-  const startDate = new Date(2025, 6, 25); // July 25, 2025 (month is 0-based)
-  const endDate = new Date(2025, 7, 25);   // August 25, 2025
+  // Fixed competition period: August 25 to September 25, 2025
+  const startDate = new Date(2025, 7, 25); // August 25, 2025 (month is 0-based)
+  const endDate = new Date(2025, 8, 25);   // September 25, 2025
   
   // Format as YYYY-MM-DD for API
   const formatDate = (date: Date) => {
