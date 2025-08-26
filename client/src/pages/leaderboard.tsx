@@ -341,7 +341,7 @@ export default function LeaderboardPage() {
                   <h4 className="text-lg font-semibold text-blue-400 mb-3">📅 Competition Period</h4>
                   <ul className="space-y-2 text-sm">
                     <li>• Monthly competitions run from the 25th of each month to the 25th of the following month</li>
-                    <li>• Current competition: July 25, 2025 - August 25, 2025</li>
+                    <li>• Current competition: July 25, 2025 - September 25, 2025</li>
                     <li>• Leaderboard resets automatically at the start of each new competition</li>
                     <li>• Winners are announced within 48 hours of competition end</li>
                   </ul>
