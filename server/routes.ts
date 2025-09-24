@@ -1,110 +1,230 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { z } from "zod";
-import type { LeaderboardData, RoobetApiResponse } from "@shared/schema";
+import type { LeaderboardData } from "@shared/schema";
 import axios from "axios";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const ROOBET_API_CONFIG = {
-  endpoint: 'https://roobetconnect.com/affiliate/v2/stats',
-  userId: '2c7f6672-fd92-479b-9033-9739d913d374',
-  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJjN2Y2NjcyLWZkOTItNDc5Yi05MDMzLTk3MzlkOTEzZDM3NCIsIm5vbmNlIjoiMGIxNmYxM2ItYzY1Ny00Mzg2LTg5MWMtZTBiZTMwM2U5OTVjIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzUwODAzNzU0fQ.MM85GRm9fPJ2s_q1e37aWH-BIOhVCuW01nOgFW6-g4E'
+// Prize distribution for Bulwark7 (total $1,500)
+// 1: $1000, 2: $250, 3: $100, 4-6: $50
+const PRIZE_STRUCTURE = [1000, 250, 100, 50, 50, 50];
+
+// In-memory JSON DB-like cache (per source), refreshed hourly
+type SourceKey = "all" | "com" | "us";
+const HOURLY_MS = 60 * 60 * 1000;
+interface SourceSnapshot {
+  rawPlayers: Array<{ username: string; totalWager: number }>;
+  lastUpdated: number;
+}
+const hourlyCache: Record<SourceKey, SourceSnapshot> = {
+  all: { rawPlayers: [], lastUpdated: 0 },
+  com: { rawPlayers: [], lastUpdated: 0 },
+  us: { rawPlayers: [], lastUpdated: 0 },
 };
 
-// Fixed competition dates: August 25 to September 25, 2025
-function getCompetitionDates() {
-  // Fixed competition period: August 25 to September 25, 2025
-  const startDate = new Date(2025, 7, 25); // August 25, 2025 (month is 0-based)
-  const endDate = new Date(2025, 8, 25);   // September 25, 2025
-  
-  // Format as YYYY-MM-DD for API
-  const formatDate = (date: Date) => {
-    return date.toISOString().split('T')[0];
-  };
-  
-  return {
-    startDate: formatDate(startDate),
-    endDate: formatDate(endDate)
-  };
-}
+// Snapshot file on disk
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dataDir = path.resolve(__dirname, "data");
+const snapshotFile = path.resolve(dataDir, "leaderboard.json");
 
-const PRIZE_STRUCTURE = [
-  400, 200, 150, 100, 50, 40, 20, 20, 10, 10
-];
-
-// Cache for leaderboard data
-let cachedLeaderboardData: LeaderboardData | null = null;
-let lastFetchTime: number = 0;
-const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
-
-// Function to fetch affiliate stats from Roobet API
-async function fetchAffiliateStats(): Promise<any> {
-  const { startDate, endDate } = getCompetitionDates();
-  
-  console.log(`Fetching Roobet data for period: ${startDate} to ${endDate}`);
-  
+function ensureDataDir() {
   try {
-    const response = await axios.get(ROOBET_API_CONFIG.endpoint, {
-      params: {
-        userId: ROOBET_API_CONFIG.userId,
-        startDate,
-        endDate
-      },
-      headers: {
-        Authorization: `Bearer ${ROOBET_API_CONFIG.token}`,
-        'Content-Type': 'application/json'
-      },
-      timeout: 10000 // 10 second timeout
-    });
-
-    console.log('Roobet API Response:', response.data);
-    return response.data;
-  } catch (error: any) {
-    if (error.code === 'ECONNABORTED') {
-      console.error('Roobet API request timed out');
-    } else if (error.response) {
-      console.error('Roobet API error:', error.response.status, error.response.data);
-    } else {
-      console.error('Roobet API request failed:', error.message);
-    }
-    throw error;
+    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+  } catch (e) {
+    console.error("Failed to create data dir", e);
   }
 }
 
+function loadSnapshotFromDisk() {
+  try {
+    if (fs.existsSync(snapshotFile)) {
+      const raw = fs.readFileSync(snapshotFile, "utf8");
+      const parsed = JSON.parse(raw) as Record<SourceKey, SourceSnapshot>;
+      ( ["all","com","us"] as const ).forEach((k) => {
+        if (parsed?.[k]?.rawPlayers) hourlyCache[k] = parsed[k];
+      });
+      console.log("Loaded leaderboard snapshot from disk");
+    }
+  } catch (e) {
+    console.error("Failed to load leaderboard snapshot", e);
+  }
+}
+
+function saveSnapshotToDisk() {
+  try {
+    ensureDataDir();
+    const payload = JSON.stringify(hourlyCache, null, 2);
+    fs.writeFileSync(snapshotFile, payload, "utf8");
+    console.log("Saved leaderboard snapshot to", snapshotFile);
+  } catch (e) {
+    console.error("Failed to save leaderboard snapshot", e);
+  }
+}
+
+// Google Sheets configuration (defaults based on provided links)
+const SHEET_COM_ID = process.env.SHEET_COM_ID || "1KLiTUs90DQYfGBE8UCoW5qhqSeC21_MDzh1_cjkISVU";
+const SHEET_COM_GID = process.env.SHEET_COM_GID || "235680015";
+const SHEET_US_ID = process.env.SHEET_US_ID || "1wi1i6mecmKHJ2J3G_k3p02KXYWIX_H3X9WVe-ADVbFo";
+const SHEET_US_GID = process.env.SHEET_US_GID || "235680015";
+
+// External Sheet-to-JSON service
+const SHEETTOJSON_BASE = process.env.SHEETTOJSON_BASE || "https://sheettojson.replit.app";
+
+function buildGvizUrl(sheetId: string, gid: string) {
+  return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
+}
+
+function safeParseNumber(value: unknown): number {
+  if (typeof value === "number") return value;
+  if (typeof value === "string") {
+    const cleaned = value.replace(/[^0-9.\-]/g, "");
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+  return 0;
+}
+
+function maskUsername(username: string): string {
+  const trimmed = (username || "").toString();
+  if (trimmed.length <= 3) return trimmed + "***";
+  return trimmed.substring(0, 3) + "*".repeat(Math.max(3, trimmed.length - 3));
+}
+
+async function fetchPlayersFromSheet(sheetId: string, gid: string): Promise<Array<{ username: string; totalWager: number }>> {
+  // Prefer external service to avoid brittle GViz parsing
+  const url = `${SHEETTOJSON_BASE}/api/sheet?id=${encodeURIComponent(sheetId)}&gid=${encodeURIComponent(gid)}`;
+  const resp = await axios.get(url, { timeout: 15000 });
+  const payload = resp.data;
+
+  // Expected shape:
+  // { error: boolean, data: { sheets: [{ headers: string[], data: Array<Record<string,string|number>> }] } }
+  const firstSheet = payload?.data?.sheets?.[0];
+  const rows: Array<Record<string, any>> = firstSheet?.data || [];
+  if (!Array.isArray(rows) || rows.length === 0) return [];
+
+  // Determine keys from first non-empty row
+  const sample = rows.find((r) => r && Object.keys(r).length > 0) || rows[0] || {};
+  const keys = Object.keys(sample).map((k) => ({ orig: k, lc: k.toLowerCase() }));
+
+  // Prefer user_name or keys containing 'user' for username (avoid affiliate_name)
+  let usernameKey: string | undefined =
+    keys.find(k => k.lc === "user_name")?.orig ||
+    keys.find(k => k.lc === "username")?.orig ||
+    keys.find(k => k.lc.includes("user"))?.orig ||
+    keys.find(k => (k.lc.endsWith("_name") || k.lc === "name") && !k.lc.includes("affiliate") && !k.lc.includes("campaign"))?.orig;
+
+  // Find wager key, prefer weighted, else wagered, else any contains 'wager'
+  let wagerKey: string | undefined =
+    keys.find(k => k.lc.includes("weighted") && k.lc.includes("wager"))?.orig ||
+    keys.find(k => k.lc === "wagered")?.orig ||
+    keys.find(k => k.lc.includes("wager"))?.orig;
+
+  if (!usernameKey || !wagerKey) {
+    throw new Error("Could not locate username/wager columns in sheet JSON");
+  }
+
+  const players: Array<{ username: string; totalWager: number }> = [];
+  for (const row of rows) {
+    const usernameRaw = row?.[usernameKey];
+    const wagerRaw = row?.[wagerKey];
+    const username = (usernameRaw ?? "").toString().trim();
+    const totalWager = safeParseNumber(wagerRaw);
+    if (!username || !isFinite(totalWager)) continue;
+    players.push({ username, totalWager });
+  }
+  return players;
+}
+
+async function fetchAggregatedPlayers(source: SourceKey): Promise<Array<{ username: string; totalWager: number }>> {
+  if (source === "com") {
+    return await fetchPlayersFromSheet(SHEET_COM_ID, SHEET_COM_GID).catch(() => []);
+  }
+  if (source === "us") {
+    return await fetchPlayersFromSheet(SHEET_US_ID, SHEET_US_GID).catch(() => []);
+  }
+  // all
+  const [comPlayers, usPlayers] = await Promise.all([
+    fetchPlayersFromSheet(SHEET_COM_ID, SHEET_COM_GID).catch(() => []),
+    fetchPlayersFromSheet(SHEET_US_ID, SHEET_US_GID).catch(() => []),
+  ]);
+
+  const totals = new Map<string, number>();
+  const record = (p: { username: string; totalWager: number }) => {
+    const key = p.username.trim();
+    const prev = totals.get(key) || 0;
+    totals.set(key, prev + (p.totalWager || 0));
+  };
+  comPlayers.forEach(record);
+  usPlayers.forEach(record);
+
+  return Array.from(totals.entries()).map(([username, totalWager]) => ({ username, totalWager }));
+}
+
+async function refreshSource(source: SourceKey): Promise<void> {
+  const list = await fetchAggregatedPlayers(source);
+  hourlyCache[source] = {
+    rawPlayers: list,
+    lastUpdated: Date.now(),
+  };
+}
+
+async function refreshAllSources(): Promise<void> {
+  await Promise.all([refreshSource("com"), refreshSource("us")]);
+  // Aggregate after com/us are ready
+  const totals = new Map<string, number>();
+  for (const src of ["com", "us"] as const) {
+    for (const p of hourlyCache[src].rawPlayers) {
+      const prev = totals.get(p.username) || 0;
+      totals.set(p.username, prev + p.totalWager);
+    }
+  }
+  hourlyCache.all = {
+    rawPlayers: Array.from(totals.entries()).map(([username, totalWager]) => ({ username, totalWager })),
+    lastUpdated: Date.now(),
+  };
+  saveSnapshotToDisk();
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize cache on startup and schedule hourly refresh
+  ensureDataDir();
+  loadSnapshotFromDisk();
+  refreshAllSources().catch((e) => console.error("Initial refresh failed", e));
+  setInterval(() => {
+    refreshAllSources().catch((e) => console.error("Hourly refresh failed", e));
+  }, HOURLY_MS);
   
   // Get current leaderboard data
   app.get("/api/leaderboard", async (req, res) => {
     try {
-      const now = Date.now();
-      
-      // Return cached data if it's still fresh
-      if (cachedLeaderboardData && (now - lastFetchTime) < CACHE_DURATION) {
-        return res.json(cachedLeaderboardData);
-      }
+      const sourceParam = (req.query.source as string | undefined)?.toLowerCase();
+      const source: SourceKey = sourceParam === "us" ? "us" : sourceParam === "com" ? "com" : "all";
 
       const competition = await storage.getCurrentCompetition();
       if (!competition) {
         return res.status(404).json({ message: "No active competition found" });
       }
 
-      // Fetch fresh data from Roobet API
-      const apiData = await fetchAffiliateStats();
-      
-      // Transform API data to leaderboard format
-      const allPlayers = (Array.isArray(apiData) ? apiData : [])
-        .map((player: any) => ({
-          username: player.username || 'Unknown',
-          totalWager: parseFloat(player.weightedWagered || player.wagered || 0)
-        }))
+      // Use hourly snapshot; if empty, perform an on-demand refresh for resiliency
+      let aggregated = hourlyCache[source]?.rawPlayers || [];
+      if (!aggregated || aggregated.length === 0) {
+        aggregated = await fetchAggregatedPlayers(source);
+        hourlyCache[source] = { rawPlayers: aggregated, lastUpdated: Date.now() };
+        saveSnapshotToDisk();
+      }
+      const allPlayers = aggregated
+        .map((p) => ({ username: p.username || "Unknown", totalWager: Number(p.totalWager) || 0 }))
+        .filter((p) => !!p.username)
         .sort((a, b) => b.totalWager - a.totalWager);
 
-      // Get top 10 for display with correct rankings and prizes
+      // Get top 6 for display with correct rankings and prizes
       const players = allPlayers
-        .slice(0, 10)
+        .slice(0, 6)
         .map((player: any, index: number) => {
-          const originalUsername = player.username;
-          const maskedUsername = originalUsername.substring(0, 3) + '*'.repeat(Math.max(0, originalUsername.length - 3));
+          const maskedUsername = maskUsername(player.username);
           return {
             username: maskedUsername,
             totalWager: player.totalWager,
@@ -113,7 +233,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           };
         });
 
-      // Update local storage with fresh data
+      // Update local storage snapshot (for diagnostics/fallbacks)
       await storage.updateLeaderboardEntries(
         players.map((p: any) => ({
           username: p.username,
@@ -125,13 +245,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const leaderboardData: LeaderboardData = {
         players,
         totalPrizePool: parseFloat(competition.totalPrizePool),
-        totalPlayers: allPlayers.length, // Show total active players from API
+        totalPlayers: allPlayers.length,
         lastUpdated: new Date().toISOString()
       };
-
-      // Cache the data
-      cachedLeaderboardData = leaderboardData;
-      lastFetchTime = now;
 
       res.json(leaderboardData);
       
@@ -160,17 +276,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Final fallback with demo data
         const demoData: LeaderboardData = {
           players: [
-            { username: "CryptoKing", totalWager: 125000, rank: 1, prize: 400 },
-            { username: "SlotMaster", totalWager: 98500, rank: 2, prize: 200 },
-            { username: "LuckyPlayer", totalWager: 87200, rank: 3, prize: 150 },
-            { username: "BetBeast", totalWager: 76800, rank: 4, prize: 100 },
-            { username: "WagerWolf", totalWager: 65400, rank: 5, prize: 50 },
-            { username: "RollRoyce", totalWager: 54300, rank: 6, prize: 40 },
-            { username: "SpinStar", totalWager: 43200, rank: 7, prize: 20 },
-            { username: "CashCow", totalWager: 32100, rank: 8, prize: 20 }
+            { username: "User***", totalWager: 125000, rank: 1, prize: 1000 },
+            { username: "Player***", totalWager: 98500, rank: 2, prize: 250 },
+            { username: "Anon***", totalWager: 87200, rank: 3, prize: 100 },
+            { username: "High***", totalWager: 76800, rank: 4, prize: 50 },
+            { username: "Wager***", totalWager: 65400, rank: 5, prize: 50 },
+            { username: "Spin***", totalWager: 54300, rank: 6, prize: 50 }
           ],
-          totalPrizePool: 1000,
-          totalPlayers: 8,
+          totalPrizePool: 1500,
+          totalPlayers: 6,
           lastUpdated: new Date().toISOString()
         };
         
@@ -214,13 +328,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create new competition
+      // Create a new 21-day competition starting today
       const now = new Date();
-      const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 24);
-      
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 21);
       const newCompetition = await storage.createCompetition({
         startDate: now,
-        endDate: nextMonth,
-        totalPrizePool: "1000",
+        endDate: end,
+        totalPrizePool: "1500",
         isActive: "true"
       });
 

@@ -1,4 +1,4 @@
-# MarioZip Leaderboard Application
+# Leaderboard Application
 
 ## Overview
 

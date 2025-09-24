@@ -18,12 +18,12 @@ export function formatNumber(num: number): string {
 }
 
 export function getNextResetDate(): Date {
-  // Fixed competition end date: September 25, 2025
-  return new Date(2025, 8, 25, 23, 59, 59); // September 25, 2025 11:59:59 PM
+  // Fixed competition end date for Bulwark7 launch: October 14, 2025
+  return new Date(2025, 9, 14, 23, 59, 59); // October 14, 2025 11:59:59 PM
 }
 
 export function getPrizeForRank(rank: number): number {
-  const prizes = [400, 200, 150, 100, 50, 40, 20, 20, 10, 10];
+  const prizes = [500, 300, 250, 150, 50, 50, 50, 50, 50, 50];
   return prizes[rank - 1] || 0;
 }
 

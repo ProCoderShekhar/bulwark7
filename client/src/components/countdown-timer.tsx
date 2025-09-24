@@ -5,9 +5,10 @@ import { Clock } from 'lucide-react';
 interface CountdownTimerProps {
   targetDate?: Date;
   onReset?: () => void;
+  label?: string;
 }
 
-export function CountdownTimer({ targetDate, onReset }: CountdownTimerProps) {
+export function CountdownTimer({ targetDate, onReset, label }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -61,9 +62,7 @@ export function CountdownTimer({ targetDate, onReset }: CountdownTimerProps) {
       <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
           <Clock className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-red-400" />
-          <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50">
-            August 25 - September 25 Competition
-          </h3>
+          <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50">{label || 'Competition'}</h3>
         </div>
         <div className="text-center">
           <div className="glass-card rounded-lg p-6 bg-red-500/10 border border-red-500/20">
@@ -83,9 +82,7 @@ export function CountdownTimer({ targetDate, onReset }: CountdownTimerProps) {
     <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
         <Clock className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-blue-400" />
-        <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50">
-          August 25 - September 25 Competition
-        </h3>
+        <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-50">{label || 'Competition Countdown'}</h3>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
         <CountdownDigit value={timeLeft.days} label="DAYS" />
