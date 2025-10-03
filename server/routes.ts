@@ -66,9 +66,9 @@ function saveSnapshotToDisk() {
 
 // Google Sheets configuration (defaults based on provided links)
 const SHEET_COM_ID = process.env.SHEET_COM_ID || "1KLiTUs90DQYfGBE8UCoW5qhqSeC21_MDzh1_cjkISVU";
-const SHEET_COM_GID = process.env.SHEET_COM_GID || "235680015";
+const SHEET_COM_GID = process.env.SHEET_COM_GID || "1502602180";
 const SHEET_US_ID = process.env.SHEET_US_ID || "1wi1i6mecmKHJ2J3G_k3p02KXYWIX_H3X9WVe-ADVbFo";
-const SHEET_US_GID = process.env.SHEET_US_GID || "235680015";
+const SHEET_US_GID = process.env.SHEET_US_GID || "1502602180";
 
 // External Sheet-to-JSON service
 const SHEETTOJSON_BASE = process.env.SHEETTOJSON_BASE || "https://sheettojson.replit.app";
