@@ -66,16 +66,10 @@ function saveSnapshotToDisk() {
 
 // Google Sheets configuration (defaults based on provided links)
 const SHEET_COM_ID = process.env.SHEET_COM_ID || "1KLiTUs90DQYfGBE8UCoW5qhqSeC21_MDzh1_cjkISVU";
-const SHEET_COM_GID = process.env.SHEET_COM_GID || "1502602180";
 const SHEET_US_ID = process.env.SHEET_US_ID || "1wi1i6mecmKHJ2J3G_k3p02KXYWIX_H3X9WVe-ADVbFo";
-const SHEET_US_GID = process.env.SHEET_US_GID || "1502602180";
 
 // External Sheet-to-JSON service
 const SHEETTOJSON_BASE = process.env.SHEETTOJSON_BASE || "https://sheettojson.replit.app";
-
-function buildGvizUrl(sheetId: string, gid: string) {
-  return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
-}
 
 function safeParseNumber(value: unknown): number {
   if (typeof value === "number") return value;
@@ -93,9 +87,9 @@ function maskUsername(username: string): string {
   return trimmed.substring(0, 3) + "*".repeat(Math.max(3, trimmed.length - 3));
 }
 
-async function fetchPlayersFromSheet(sheetId: string, gid: string): Promise<Array<{ username: string; totalWager: number }>> {
-  // Prefer external service to avoid brittle GViz parsing
-  const url = `${SHEETTOJSON_BASE}/api/sheet?id=${encodeURIComponent(sheetId)}&gid=${encodeURIComponent(gid)}`;
+async function fetchPlayersFromSheet(sheetId: string): Promise<Array<{ username: string; totalWager: number }>> {
+  // Prefer external service to avoid brittle GViz parsing; default to first sheet
+  const url = `${SHEETTOJSON_BASE}/api/sheet?id=${encodeURIComponent(sheetId)}`;
   const resp = await axios.get(url, { timeout: 15000 });
   const payload = resp.data;
 
@@ -140,15 +134,15 @@ async function fetchPlayersFromSheet(sheetId: string, gid: string): Promise<Arra
 
 async function fetchAggregatedPlayers(source: SourceKey): Promise<Array<{ username: string; totalWager: number }>> {
   if (source === "com") {
-    return await fetchPlayersFromSheet(SHEET_COM_ID, SHEET_COM_GID).catch(() => []);
+    return await fetchPlayersFromSheet(SHEET_COM_ID).catch(() => []);
   }
   if (source === "us") {
-    return await fetchPlayersFromSheet(SHEET_US_ID, SHEET_US_GID).catch(() => []);
+    return await fetchPlayersFromSheet(SHEET_US_ID).catch(() => []);
   }
   // all
   const [comPlayers, usPlayers] = await Promise.all([
-    fetchPlayersFromSheet(SHEET_COM_ID, SHEET_COM_GID).catch(() => []),
-    fetchPlayersFromSheet(SHEET_US_ID, SHEET_US_GID).catch(() => []),
+    fetchPlayersFromSheet(SHEET_COM_ID).catch(() => []),
+    fetchPlayersFromSheet(SHEET_US_ID).catch(() => []),
   ]);
 
   const totals = new Map<string, number>();
