@@ -35,16 +35,16 @@ export class MemStorage implements IStorage {
   }
 
   private initializeCurrentCompetition() {
-    // Fixed competition period for Bulwark7 launch:
-    // September 23, 2025 to October 14, 2025 (21 days)
-    const startDate = new Date(2025, 8, 23); // month is 0-based (8 = September)
-    const endDate = new Date(2025, 9, 14);   // 9 = October
+    // November 2025 competition
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     
     const competition: Competition = {
       id: this.currentCompetitionId++,
       startDate,
       endDate,
-      totalPrizePool: "1500",
+      totalPrizePool: "3000",
       isActive: "true"
     };
     

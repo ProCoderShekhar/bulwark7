@@ -134,7 +134,7 @@ export default function LeaderboardPage() {
           </h1>
           
           <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-8 sm:mb-12 max-w-2xl mx-auto px-2">
-            Compete over 21 days across Stake.com and Stake.us. Top 6 share $1,500.
+            Compete over 21 days across Stake.com and Stake.us. Top 10 share $3,000.
           </p>
 
           <CountdownTimer 
@@ -152,7 +152,7 @@ export default function LeaderboardPage() {
             <div className="glass-card-hover rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
               <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500 mx-auto mb-2 sm:mb-3" />
               <div className="text-xl sm:text-2xl lg:text-3xl font-bold prize-text mb-1">
-                {formatCurrency(leaderboardData?.totalPrizePool || 1000)}
+                {formatCurrency(leaderboardData?.totalPrizePool || 3000)}
               </div>
               <p className="text-xs sm:text-sm text-slate-400">Total Prize Pool</p>
             </div>
@@ -211,14 +211,14 @@ export default function LeaderboardPage() {
                   />
                 ))}
                 
-                {/* Placeholder entries to fill up to 6 total */}
-                {Array.from({ length: Math.max(0, 6 - leaderboardData.players.length) }, (_, index) => {
+                {/* Placeholder entries to fill up to 10 total */}
+                {Array.from({ length: Math.max(0, 10 - leaderboardData.players.length) }, (_, index) => {
                   const rank = leaderboardData.players.length + index + 1;
                   const placeholderPlayer = {
                     username: "---",
                     totalWager: 0,
                     rank: rank,
-                    prize: rank <= 6 ? [1000, 250, 100, 50, 50, 50][rank - 1] : 0
+                    prize: rank <= 10 ? [1500, 750, 300, 150, 50, 50, 50, 50, 50, 50][rank - 1] : 0
                   };
                   return (
                     <LeaderboardCard 
@@ -296,7 +296,7 @@ export default function LeaderboardPage() {
                 </p>
                 <p>
                   Prize Pool: <span className="text-blue-400 font-semibold">
-                    {formatCurrency(leaderboardData?.totalPrizePool || 1000)}
+                    {formatCurrency(leaderboardData?.totalPrizePool || 3000)}
                   </span>
                 </p>
               </div>

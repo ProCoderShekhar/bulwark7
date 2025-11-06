@@ -7,9 +7,9 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Prize distribution for Bulwark7 (total $1,500)
-// 1: $1000, 2: $250, 3: $100, 4-6: $50
-const PRIZE_STRUCTURE = [1000, 250, 100, 50, 50, 50];
+// Prize distribution for Bulwark7 (total $3,000)
+// 1: $1500, 2: $750, 3: $300, 4: $150, 5-10: $50
+const PRIZE_STRUCTURE = [1500, 750, 300, 150, 50, 50, 50, 50, 50, 50];
 
 // In-memory JSON DB-like cache (per source), refreshed hourly
 type SourceKey = "all" | "com" | "us";
@@ -214,9 +214,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .filter((p) => !!p.username)
         .sort((a, b) => b.totalWager - a.totalWager);
 
-      // Get top 6 for display with correct rankings and prizes
+      // Get top 10 for display with correct rankings and prizes
       const players = allPlayers
-        .slice(0, 6)
+        .slice(0, 10)
         .map((player: any, index: number) => {
           const maskedUsername = maskUsername(player.username);
           return {
@@ -260,7 +260,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             rank: entry.rank,
             prize: PRIZE_STRUCTURE[entry.rank - 1] || 0
           })),
-          totalPrizePool: competition ? parseFloat(competition.totalPrizePool) : 1000,
+          totalPrizePool: competition ? parseFloat(competition.totalPrizePool) : 3000,
           totalPlayers: cachedEntries.length,
           lastUpdated: cachedEntries[0]?.lastUpdated?.toISOString() || new Date().toISOString()
         };
@@ -270,15 +270,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Final fallback with demo data
         const demoData: LeaderboardData = {
           players: [
-            { username: "User***", totalWager: 125000, rank: 1, prize: 1000 },
-            { username: "Player***", totalWager: 98500, rank: 2, prize: 250 },
-            { username: "Anon***", totalWager: 87200, rank: 3, prize: 100 },
-            { username: "High***", totalWager: 76800, rank: 4, prize: 50 },
-            { username: "Wager***", totalWager: 65400, rank: 5, prize: 50 },
-            { username: "Spin***", totalWager: 54300, rank: 6, prize: 50 }
+            { username: "User***", totalWager: 250000, rank: 1, prize: 1500 },
+            { username: "Player***", totalWager: 198500, rank: 2, prize: 750 },
+            { username: "Anon***", totalWager: 157200, rank: 3, prize: 300 },
+            { username: "High***", totalWager: 126800, rank: 4, prize: 150 },
+            { username: "Wager***", totalWager: 105400, rank: 5, prize: 50 },
+            { username: "Spin***", totalWager: 94300, rank: 6, prize: 50 },
+            { username: "Bet***", totalWager: 83200, rank: 7, prize: 50 },
+            { username: "Roll***", totalWager: 72100, rank: 8, prize: 50 },
+            { username: "Jackpot***", totalWager: 61000, rank: 9, prize: 50 },
+            { username: "Winner***", totalWager: 50000, rank: 10, prize: 50 }
           ],
-          totalPrizePool: 1500,
-          totalPlayers: 6,
+          totalPrizePool: 3000,
+          totalPlayers: 10,
           lastUpdated: new Date().toISOString()
         };
         
