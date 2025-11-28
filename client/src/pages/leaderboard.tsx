@@ -247,6 +247,62 @@ export default function LeaderboardPage() {
         </div>
       </section>
 
+      {/* Disclaimer Section */}
+      <section className="py-6 sm:py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="glass-card rounded-2xl p-6 sm:p-8 border-l-4 border-yellow-500">
+            <div className="flex items-start gap-4">
+              <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500 flex-shrink-0 mt-1" />
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-50 mb-2">
+                    IMPORTANT update to the Affiliate System
+                  </h3>
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Implemented in September 2025, Stake has changed the way that Affiliate leaderboards are operated.
+                    They have enforced a WEIGHTED system, meaning the type of game you play will affect where you rank on races and raffles.
+                  </p>
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed mt-2">
+                    <span className="font-semibold text-yellow-500">Please note</span> — This ONLY applies to the affiliate benefits (leaderboards and raffles) and has no bearing on any of your benefits directly by Stake or related to your gameplay on Stake.
+                  </p>
+                </div>
+
+                <div className="bg-slate-900/50 rounded-lg overflow-hidden border border-slate-700/50">
+                  <div className="grid grid-cols-2 bg-slate-800/50 p-3 text-xs sm:text-sm font-semibold text-slate-200">
+                    <div>RTP Condition</div>
+                    <div>Counted Toward Affiliate Wagers</div>
+                  </div>
+                  <div className="divide-y divide-slate-700/50">
+                    <div className="grid grid-cols-2 p-3 text-xs sm:text-sm text-slate-400">
+                      <div>RTP ≤ 98%</div>
+                      <div>100% of wagered amount counts</div>
+                    </div>
+                    <div className="grid grid-cols-2 p-3 text-xs sm:text-sm text-slate-400">
+                      <div>RTP &gt; 98%</div>
+                      <div>50% of wagered amount counts</div>
+                    </div>
+                    <div className="grid grid-cols-2 p-3 text-xs sm:text-sm text-slate-400">
+                      <div>RTP ≥ 99%</div>
+                      <div>10% of wagered amount counts</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-slate-200 mb-2">Notes</h4>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    We understand this is a frustrating change which does complicate things a shade, but it is now a standard across any affiliate leaderboard on Stake. If they change it back to the $1 for $1 model, we will be the first to shift back to that.
+                  </p>
+                  <p className="text-slate-400 text-sm leading-relaxed mt-2">
+                    Any other concerns or if you need clarification, please contact Bulwark7 directly.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-8 sm:py-12 lg:py-16 mt-12 sm:mt-16 lg:mt-20 border-t border-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
