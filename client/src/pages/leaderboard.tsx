@@ -352,7 +352,7 @@ export default function LeaderboardPage() {
                 </p>
                 <p>
                   Prize Pool: <span className="text-blue-400 font-semibold">
-                    {2000)}
+                    {formatCurrency(2000)}
                   </span>
                 </p>
               </div>
