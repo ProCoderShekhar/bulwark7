@@ -152,7 +152,7 @@ export default function LeaderboardPage() {
             <div className="glass-card-hover rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
               <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500 mx-auto mb-2 sm:mb-3" />
               <div className="text-xl sm:text-2xl lg:text-3xl font-bold prize-text mb-1">
-                {formatCurrency(leaderboardData?.totalPrizePool || 2000)}
+                {formatCurrency(2000)}
               </div>
               <p className="text-xs sm:text-sm text-slate-400">Total Prize Pool</p>
             </div>
