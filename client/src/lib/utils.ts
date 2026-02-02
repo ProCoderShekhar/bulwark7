@@ -18,8 +18,8 @@ export function formatNumber(num: number): string {
 }
 
 export function getNextResetDate(): Date {
-  // Fixed competition end date for Bulwark7 launch: October 14, 2025
-  return new Date(2025, 9, 14, 23, 59, 59); // October 14, 2025 11:59:59 PM
+  // Fixed competition end date for February 2026
+  return new Date(2026, 1, 28, 23, 59, 59); // February 28, 2026 11:59:59 PM
 }
 
 export function getPrizeForRank(rank: number): number {
