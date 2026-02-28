@@ -7,9 +7,9 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Prize distribution for Bulwark7 (total $2,000)
-// 1st $750, 2nd $500, 3rd $250, 4th $150, 5th $100, 6th $75, 7th-9th $50, 10th $25
-const PRIZE_STRUCTURE = [750, 500, 250, 150, 100, 75, 50, 50, 50, 25];
+// Prize distribution for Bulwark7 (total $3,000)
+// 1st $1500, 2nd $750, 3rd $250, 4th $150, 5th $100, 6th $75, 7th-9th $50, 10th $25
+const PRIZE_STRUCTURE = [1500, 750, 250, 150, 100, 75, 50, 50, 50, 25];
 
 // In-memory JSON DB-like cache (per source), refreshed hourly
 type SourceKey = "all" | "com" | "us";
@@ -260,7 +260,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             rank: entry.rank,
             prize: PRIZE_STRUCTURE[entry.rank - 1] || 0
           })),
-          totalPrizePool: competition ? parseFloat(competition.totalPrizePool) : 2000,
+          totalPrizePool: competition ? parseFloat(competition.totalPrizePool) : 3000,
           totalPlayers: cachedEntries.length,
           lastUpdated: cachedEntries[0]?.lastUpdated?.toISOString() || new Date().toISOString()
         };
@@ -270,8 +270,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Final fallback with demo data
         const demoData: LeaderboardData = {
           players: [
-            { username: "User***", totalWager: 250000, rank: 1, prize: 750 },
-            { username: "Player***", totalWager: 198500, rank: 2, prize: 500 },
+            { username: "User***", totalWager: 250000, rank: 1, prize: 1500 },
+            { username: "Player***", totalWager: 198500, rank: 2, prize: 750 },
             { username: "Anon***", totalWager: 157200, rank: 3, prize: 250 },
             { username: "High***", totalWager: 126800, rank: 4, prize: 150 },
             { username: "Wager***", totalWager: 105400, rank: 5, prize: 100 },
@@ -281,7 +281,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             { username: "Jackpot***", totalWager: 61000, rank: 9, prize: 50 },
             { username: "Winner***", totalWager: 50000, rank: 10, prize: 25 }
           ],
-          totalPrizePool: 2000,
+          totalPrizePool: 3000,
           totalPlayers: 10,
           lastUpdated: new Date().toISOString()
         };
@@ -338,7 +338,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const newCompetition = await storage.createCompetition({
         startDate: now,
         endDate: end,
-        totalPrizePool: "2000",
+        totalPrizePool: "3000",
         isActive: "true"
       });
 
