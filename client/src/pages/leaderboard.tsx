@@ -134,7 +134,7 @@ export default function LeaderboardPage() {
           </h1>
           
           <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-8 sm:mb-12 max-w-2xl mx-auto px-2">
-            Compete monthly across Stake.com and Stake.us. Top 10 share $2,000.
+            Compete monthly across Stake.com and Stake.us. Top 10 share $3,000.
           </p>
 
           <CountdownTimer 
@@ -152,7 +152,7 @@ export default function LeaderboardPage() {
             <div className="glass-card-hover rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
               <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500 mx-auto mb-2 sm:mb-3" />
               <div className="text-xl sm:text-2xl lg:text-3xl font-bold prize-text mb-1">
-                {formatCurrency(2000)}
+                {formatCurrency(3000)}
               </div>
               <p className="text-xs sm:text-sm text-slate-400">Total Prize Pool</p>
             </div>
@@ -348,7 +348,7 @@ export default function LeaderboardPage() {
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
                       ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
-                      : 'Feb 01 - Feb 28'
+                      : 'Mar 01 - Apr 01'
                     }
                   </span>
                 </p>
@@ -357,7 +357,7 @@ export default function LeaderboardPage() {
                 </p>
                 <p>
                   Prize Pool: <span className="text-blue-400 font-semibold">
-                    {formatCurrency(2000)}
+                    {formatCurrency(3000)}
                   </span>
                 </p>
               </div>
