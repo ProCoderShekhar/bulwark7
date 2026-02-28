@@ -30,9 +30,9 @@ const __dirname = path.dirname(__filename);
 const dataDir = path.resolve(__dirname, "data");
 const snapshotFile = path.resolve(dataDir, "leaderboard.json");
 
-function ensureDataDir() {
+async function ensureDataDir() {
   try {
-    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+    await fs.promises.mkdir(dataDir, { recursive: true });
   } catch (e) {
     console.error("Failed to create data dir", e);
   }
@@ -53,11 +53,11 @@ function loadSnapshotFromDisk() {
   }
 }
 
-function saveSnapshotToDisk() {
+async function saveSnapshotToDisk() {
   try {
-    ensureDataDir();
+    await ensureDataDir();
     const payload = JSON.stringify(hourlyCache, null, 2);
-    fs.writeFileSync(snapshotFile, payload, "utf8");
+    await fs.promises.writeFile(snapshotFile, payload, "utf8");
     console.log("Saved leaderboard snapshot to", snapshotFile);
   } catch (e) {
     console.error("Failed to save leaderboard snapshot", e);
@@ -179,12 +179,12 @@ async function refreshAllSources(): Promise<void> {
     rawPlayers: Array.from(totals.entries()).map(([username, totalWager]) => ({ username, totalWager })),
     lastUpdated: Date.now(),
   };
-  saveSnapshotToDisk();
+  await saveSnapshotToDisk();
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize cache on startup and schedule hourly refresh
-  ensureDataDir();
+  await ensureDataDir();
   loadSnapshotFromDisk();
   refreshAllSources().catch((e) => console.error("Initial refresh failed", e));
   setInterval(() => {
@@ -207,7 +207,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!aggregated || aggregated.length === 0) {
         aggregated = await fetchAggregatedPlayers(source);
         hourlyCache[source] = { rawPlayers: aggregated, lastUpdated: Date.now() };
-        saveSnapshotToDisk();
+        await saveSnapshotToDisk();
       }
       const allPlayers = aggregated
         .map((p) => ({ username: p.username || "Unknown", totalWager: Number(p.totalWager) || 0 }))
