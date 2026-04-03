@@ -19,7 +19,7 @@ export function formatNumber(num: number): string {
 
 export function getNextResetDate(): Date {
   // Fixed competition end date for April 2026
-  return new Date(2026, 3, 1, 23, 59, 59); // April 1, 2026 11:59:59 PM
+  return new Date(2026, 3, 30, 23, 59, 59); // April 30, 2026 11:59:59 PM
 }
 
 export function getPrizeForRank(rank: number): number {
