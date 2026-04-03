@@ -348,7 +348,7 @@ export default function LeaderboardPage() {
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
                       ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
-                      : 'Mar 01 - Apr 01'
+                      : 'Apr 01 - Apr 30'
                     }
                   </span>
                 </p>
