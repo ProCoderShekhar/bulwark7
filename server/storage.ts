@@ -35,9 +35,9 @@ export class MemStorage implements IStorage {
   }
 
   private initializeCurrentCompetition() {
-    // April 2026 competition
-    const startDate = new Date(2026, 3, 1);
-    const endDate = new Date(2026, 3, 30);
+    // May 2026 competition
+    const startDate = new Date(2026, 4, 1);
+    const endDate = new Date(2026, 4, 31, 23, 59, 59);
     
     const competition: Competition = {
       id: this.currentCompetitionId++,
