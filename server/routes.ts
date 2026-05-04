@@ -329,10 +329,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create a new monthly competition starting today
       const now = new Date();
       // End of current month
-      let end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      let end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0, 23, 59, 59));
       // Ensure we have at least a few days, otherwise go to next month
       if (end.getTime() - now.getTime() < 3 * 24 * 60 * 60 * 1000) {
-        end = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+        end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 2, 0, 23, 59, 59));
       }
 
       const newCompetition = await storage.createCompetition({

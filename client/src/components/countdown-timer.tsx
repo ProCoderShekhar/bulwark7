@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
 
 interface CountdownTimerProps {
-  targetDate?: Date;
+  targetDate?: Date | string;
   onReset?: () => void;
   label?: string;
 }
@@ -11,26 +11,26 @@ interface CountdownTimerProps {
 function getMonthEnd() {
   const now = new Date();
 
-  // End of current month
-  const end = new Date(
-    now.getFullYear(),
-    now.getMonth() + 1,
+  // End of current month in UTC
+  const end = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth() + 1,
     0, // last day of current month
     23,
     59,
     59
-  );
+  ));
 
   // If already passed → move to next month
   if (now.getTime() > end.getTime()) {
-    return new Date(
-      now.getFullYear(),
-      now.getMonth() + 2,
+    return new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth() + 2,
       0,
       23,
       59,
       59
-    );
+    ));
   }
 
   return end;
@@ -45,7 +45,7 @@ export function CountdownTimer({ targetDate, onReset, label }: CountdownTimerPro
   });
 
   useEffect(() => {
-    let target = targetDate || getMonthEnd();
+    let target = targetDate ? new Date(targetDate) : getMonthEnd();
 
     const updateCountdown = () => {
       const now = new Date().getTime();

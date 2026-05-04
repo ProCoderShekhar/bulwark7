@@ -40,12 +40,8 @@ export default function LeaderboardPage() {
     }
   }, [leaderboardData]);
 
-  const handleCountdownReset = () => {
-    refetch();
-  };
-
   const competitionLabel = competitionData?.startDate && competitionData?.endDate
-    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
+    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
     : undefined;
 
   const LoadingSkeleton = () => (
@@ -138,8 +134,8 @@ export default function LeaderboardPage() {
           </p>
 
           <CountdownTimer 
-            targetDate={competitionData?.endDate ? new Date(competitionData.endDate) : undefined}
-            onReset={handleCountdownReset}
+            targetDate={competitionData?.endDate}
+            onReset={refetch}
             label={competitionLabel}
           />
         </div>
@@ -347,7 +343,7 @@ export default function LeaderboardPage() {
                 <p>
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
-                      ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
+                      ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { timeZone: 'UTC' })}`
                       : 'May 01 - May 31'
                     }
                   </span>
