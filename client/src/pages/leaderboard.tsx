@@ -44,7 +44,19 @@ export default function LeaderboardPage() {
     refetch();
   };
 
-  const competitionLabel = competitionData?.startDate && competitionData?.endDate
+const now = new Date();
+
+const competitionLabel = `${now.toLocaleDateString(undefined, {
+  month: 'short'
+})} 1 - ${new Date(
+  now.getFullYear(),
+  now.getMonth() + 1,
+  0
+).toLocaleDateString(undefined, {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+})}`;
     ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
     : undefined;
 
@@ -137,11 +149,10 @@ export default function LeaderboardPage() {
             Compete monthly across Stake.com and Stake.us. Top 10 share $3,000.
           </p>
 
-          <CountdownTimer 
-            targetDate={competitionData?.endDate ? new Date(competitionData.endDate) : undefined}
-            onReset={handleCountdownReset}
-            label={competitionLabel}
-          />
+<CountdownTimer 
+  onReset={handleCountdownReset}
+  label={competitionLabel}
+/>
         </div>
       </section>
 
