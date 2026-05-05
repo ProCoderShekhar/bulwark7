@@ -46,19 +46,19 @@ export default function LeaderboardPage() {
 
 const now = new Date();
 
-const competitionLabel = `${now.toLocaleDateString(undefined, {
-  month: 'short'
-})} 1 - ${new Date(
-  now.getFullYear(),
-  now.getMonth() + 1,
-  0
-).toLocaleDateString(undefined, {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric'
-})}`;
+const competitionLabel = competitionData?.startDate && competitionData?.endDate
     ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
-    : undefined;
+    : `${now.toLocaleDateString(undefined, {
+        month: 'short'
+      })} 1 - ${new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0
+      ).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      })}`;
 
   const LoadingSkeleton = () => (
     <div className="space-y-6">
