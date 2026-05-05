@@ -40,24 +40,8 @@ export default function LeaderboardPage() {
     }
   }, [leaderboardData]);
 
-  const handleCountdownReset = () => {
-    refetch();
-  };
-
-const now = new Date();
-
-const competitionLabel = `${now.toLocaleDateString(undefined, {
-  month: 'short'
-})} 1 - ${new Date(
-  now.getFullYear(),
-  now.getMonth() + 1,
-  0
-).toLocaleDateString(undefined, {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric'
-})}`;
-    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
+  const competitionLabel = competitionData?.startDate && competitionData?.endDate
+    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
     : undefined;
 
   const LoadingSkeleton = () => (
@@ -149,10 +133,11 @@ const competitionLabel = `${now.toLocaleDateString(undefined, {
             Compete monthly across Stake.com and Stake.us. Top 10 share $3,000.
           </p>
 
-<CountdownTimer 
-  onReset={handleCountdownReset}
-  label={competitionLabel}
-/>
+          <CountdownTimer 
+            targetDate={competitionData?.endDate}
+            onReset={refetch}
+            label={competitionLabel}
+          />
         </div>
       </section>
 
@@ -358,7 +343,7 @@ const competitionLabel = `${now.toLocaleDateString(undefined, {
                 <p>
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
-                      ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
+                      ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { timeZone: 'UTC' })}`
                       : 'May 01 - May 31'
                     }
                   </span>
