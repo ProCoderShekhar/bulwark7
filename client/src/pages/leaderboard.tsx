@@ -47,9 +47,10 @@ export default function LeaderboardPage() {
 const now = new Date();
 
 const competitionLabel = competitionData?.startDate && competitionData?.endDate
-    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
+    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
     : `${now.toLocaleDateString(undefined, {
-        month: 'short'
+        month: 'short',
+        timeZone: 'UTC'
       })} 1 - ${new Date(
         now.getFullYear(),
         now.getMonth() + 1,
@@ -57,7 +58,8 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
       ).toLocaleDateString(undefined, {
         month: 'short',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
+        timeZone: 'UTC'
       })}`;
 
   const LoadingSkeleton = () => (
@@ -358,8 +360,8 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
                 <p>
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
-                      ? `${new Date(competitionData.startDate).toLocaleDateString()} - ${new Date(competitionData.endDate).toLocaleDateString()}`
-                      : 'May 01 - May 31'
+                      ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { timeZone: 'UTC' })}`
+                      : 'Jun 01 - Jun 30'
                     }
                   </span>
                 </p>
