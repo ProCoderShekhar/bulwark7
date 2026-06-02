@@ -47,16 +47,16 @@ export default function LeaderboardPage() {
 const now = new Date();
 
 const competitionLabel = competitionData?.startDate && competitionData?.endDate
-    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
+    ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'long', day: 'numeric', timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
     : `${now.toLocaleDateString(undefined, {
-        month: 'short',
+        month: 'long',
         timeZone: 'UTC'
       })} 1 - ${new Date(
         now.getFullYear(),
         now.getMonth() + 1,
         0
       ).toLocaleDateString(undefined, {
-        month: 'short',
+        month: 'long',
         day: 'numeric',
         year: 'numeric',
         timeZone: 'UTC'
@@ -360,8 +360,8 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
                 <p>
                   Period: <span className="text-slate-300">
                     {competitionData?.startDate && competitionData?.endDate
-                      ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { timeZone: 'UTC' })}`
-                      : 'Jun 01 - Jun 30'
+                      ? `${new Date(competitionData.startDate).toLocaleDateString(undefined, { month: 'long', day: 'numeric', timeZone: 'UTC' })} - ${new Date(competitionData.endDate).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
+                      : 'June 1 - June 30'
                     }
                   </span>
                 </p>
@@ -379,7 +379,7 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
 
           <div className="border-t border-slate-800/50 mt-8 pt-6 text-center">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500">
-              <p>© 2025 Bulwark7. All rights reserved.</p>
+              <p>© 2026 Bulwark7. All rights reserved.</p>
               <p className="text-slate-600">Play responsibly. 21+ (US), 18+ (elsewhere)</p>
               <p className="text-slate-600">
                 <a 
