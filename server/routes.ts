@@ -16,12 +16,13 @@ type SourceKey = "all" | "com" | "us";
 const HOURLY_MS = 60 * 60 * 1000;
 interface SourceSnapshot {
   rawPlayers: Array<{ username: string; totalWager: number }>;
+  prevPlayers: Array<{ username: string; totalWager: number }>;
   lastUpdated: number;
 }
 const hourlyCache: Record<SourceKey, SourceSnapshot> = {
-  all: { rawPlayers: [], lastUpdated: 0 },
-  com: { rawPlayers: [], lastUpdated: 0 },
-  us: { rawPlayers: [], lastUpdated: 0 },
+  all: { rawPlayers: [], prevPlayers: [], lastUpdated: 0 },
+  com: { rawPlayers: [], prevPlayers: [], lastUpdated: 0 },
+  us: { rawPlayers: [], prevPlayers: [], lastUpdated: 0 },
 };
 
 // Snapshot file on disk
@@ -44,7 +45,12 @@ function loadSnapshotFromDisk() {
       const raw = fs.readFileSync(snapshotFile, "utf8");
       const parsed = JSON.parse(raw) as Record<SourceKey, SourceSnapshot>;
       ( ["all","com","us"] as const ).forEach((k) => {
-        if (parsed?.[k]?.rawPlayers) hourlyCache[k] = parsed[k];
+        if (parsed?.[k]?.rawPlayers) {
+          hourlyCache[k] = {
+            ...parsed[k],
+            prevPlayers: parsed[k].prevPlayers || []
+          };
+        }
       });
       console.log("Loaded leaderboard snapshot from disk");
     }
@@ -87,9 +93,12 @@ function maskUsername(username: string): string {
   return trimmed.substring(0, 3) + "*".repeat(Math.max(3, trimmed.length - 3));
 }
 
-async function fetchPlayersFromSheet(sheetId: string): Promise<Array<{ username: string; totalWager: number }>> {
+async function fetchPlayersFromSheet(sheetId: string, sheetName?: string): Promise<Array<{ username: string; totalWager: number }>> {
   // Prefer external service to avoid brittle GViz parsing; default to first sheet
-  const url = `${SHEETTOJSON_BASE}/api/sheet?id=${encodeURIComponent(sheetId)}`;
+  let url = `${SHEETTOJSON_BASE}/api/sheet?id=${encodeURIComponent(sheetId)}`;
+  if (sheetName) {
+    url += `&sheet=${encodeURIComponent(sheetName)}`;
+  }
   const resp = await axios.get(url, { timeout: 15000 });
   const payload = resp.data;
 
@@ -132,17 +141,18 @@ async function fetchPlayersFromSheet(sheetId: string): Promise<Array<{ username:
   return players;
 }
 
-async function fetchAggregatedPlayers(source: SourceKey): Promise<Array<{ username: string; totalWager: number }>> {
+async function fetchAggregatedPlayers(source: SourceKey, period: "current" | "previous" = "current"): Promise<Array<{ username: string; totalWager: number }>> {
+  const sheetName = period === "current" ? "Top Wager Current Month" : "Top Wager Past Month";
   if (source === "com") {
-    return await fetchPlayersFromSheet(SHEET_COM_ID).catch(() => []);
+    return await fetchPlayersFromSheet(SHEET_COM_ID, sheetName).catch(() => []);
   }
   if (source === "us") {
-    return await fetchPlayersFromSheet(SHEET_US_ID).catch(() => []);
+    return await fetchPlayersFromSheet(SHEET_US_ID, sheetName).catch(() => []);
   }
   // all
   const [comPlayers, usPlayers] = await Promise.all([
-    fetchPlayersFromSheet(SHEET_COM_ID).catch(() => []),
-    fetchPlayersFromSheet(SHEET_US_ID).catch(() => []),
+    fetchPlayersFromSheet(SHEET_COM_ID, sheetName).catch(() => []),
+    fetchPlayersFromSheet(SHEET_US_ID, sheetName).catch(() => []),
   ]);
 
   const totals = new Map<string, number>();
@@ -158,25 +168,41 @@ async function fetchAggregatedPlayers(source: SourceKey): Promise<Array<{ userna
 }
 
 async function refreshSource(source: SourceKey): Promise<void> {
-  const list = await fetchAggregatedPlayers(source);
+  const [current, previous] = await Promise.all([
+    fetchAggregatedPlayers(source, "current"),
+    fetchAggregatedPlayers(source, "previous")
+  ]);
   hourlyCache[source] = {
-    rawPlayers: list,
+    rawPlayers: current,
+    prevPlayers: previous,
     lastUpdated: Date.now(),
   };
 }
 
 async function refreshAllSources(): Promise<void> {
   await Promise.all([refreshSource("com"), refreshSource("us")]);
-  // Aggregate after com/us are ready
-  const totals = new Map<string, number>();
+
+  // Aggregate CURRENT
+  const totalsCurrent = new Map<string, number>();
   for (const src of ["com", "us"] as const) {
     for (const p of hourlyCache[src].rawPlayers) {
-      const prev = totals.get(p.username) || 0;
-      totals.set(p.username, prev + p.totalWager);
+      const prev = totalsCurrent.get(p.username) || 0;
+      totalsCurrent.set(p.username, prev + p.totalWager);
     }
   }
+
+  // Aggregate PREVIOUS
+  const totalsPrev = new Map<string, number>();
+  for (const src of ["com", "us"] as const) {
+    for (const p of hourlyCache[src].prevPlayers) {
+      const prev = totalsPrev.get(p.username) || 0;
+      totalsPrev.set(p.username, prev + p.totalWager);
+    }
+  }
+
   hourlyCache.all = {
-    rawPlayers: Array.from(totals.entries()).map(([username, totalWager]) => ({ username, totalWager })),
+    rawPlayers: Array.from(totalsCurrent.entries()).map(([username, totalWager]) => ({ username, totalWager })),
+    prevPlayers: Array.from(totalsPrev.entries()).map(([username, totalWager]) => ({ username, totalWager })),
     lastUpdated: Date.now(),
   };
   saveSnapshotToDisk();
@@ -197,16 +223,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const sourceParam = (req.query.source as string | undefined)?.toLowerCase();
       const source: SourceKey = sourceParam === "us" ? "us" : sourceParam === "com" ? "com" : "all";
 
+      const periodParam = (req.query.period as string | undefined)?.toLowerCase();
+      const period = periodParam === "previous" ? "previous" : "current";
+
+      const limitParam = (req.query.limit as string | undefined)?.toLowerCase();
+      const isAll = limitParam === "all";
+
       const competition = await storage.getCurrentCompetition();
       if (!competition) {
         return res.status(404).json({ message: "No active competition found" });
       }
 
       // Use hourly snapshot; if empty, perform an on-demand refresh for resiliency
-      let aggregated = hourlyCache[source]?.rawPlayers || [];
+      let aggregated = (period === "current" ? hourlyCache[source]?.rawPlayers : hourlyCache[source]?.prevPlayers) || [];
       if (!aggregated || aggregated.length === 0) {
-        aggregated = await fetchAggregatedPlayers(source);
-        hourlyCache[source] = { rawPlayers: aggregated, lastUpdated: Date.now() };
+        aggregated = await fetchAggregatedPlayers(source, period);
+        if (period === "current") {
+          hourlyCache[source].rawPlayers = aggregated;
+        } else {
+          hourlyCache[source].prevPlayers = aggregated;
+        }
+        hourlyCache[source].lastUpdated = Date.now();
         saveSnapshotToDisk();
       }
       const allPlayers = aggregated
@@ -214,9 +251,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .filter((p) => !!p.username)
         .sort((a, b) => b.totalWager - a.totalWager);
 
-      // Get top 10 for display with correct rankings and prizes
-      const players = allPlayers
-        .slice(0, 10)
+      // Get rankings and prizes
+      const slicedPlayers = isAll ? allPlayers : allPlayers.slice(0, 10);
+      const players = slicedPlayers
         .map((player: any, index: number) => {
           const maskedUsername = maskUsername(player.username);
           return {
@@ -227,20 +264,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           };
         });
 
-      // Update local storage snapshot (for diagnostics/fallbacks)
-      await storage.updateLeaderboardEntries(
-        players.map((p: any) => ({
-          username: p.username,
-          totalWager: p.totalWager.toString(),
-          rank: p.rank
-        }))
-      );
+      // Update local storage snapshot (for diagnostics/fallbacks, only for current top 10)
+      if (period === "current" && !isAll) {
+        await storage.updateLeaderboardEntries(
+          players.map((p: any) => ({
+            username: p.username,
+            totalWager: p.totalWager.toString(),
+            rank: p.rank
+          }))
+        );
+      }
 
       const leaderboardData: LeaderboardData = {
         players,
         totalPrizePool: parseFloat(competition.totalPrizePool),
         totalPlayers: allPlayers.length,
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date(hourlyCache[source].lastUpdated).toISOString()
       };
 
       res.json(leaderboardData);
