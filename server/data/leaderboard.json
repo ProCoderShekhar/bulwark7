@@ -1,0 +1,535 @@
+{
+  "all": {
+    "rawPlayers": [
+      {
+        "username": "Monkeynuts7",
+        "totalWager": 58870.57
+      },
+      {
+        "username": "Sheckmate50",
+        "totalWager": 27747.8
+      },
+      {
+        "username": "Deadhulk6999",
+        "totalWager": 13759.26
+      },
+      {
+        "username": "quietriver86",
+        "totalWager": 5400.61
+      },
+      {
+        "username": "ImZooming",
+        "totalWager": 5245.59
+      },
+      {
+        "username": "Webweaver",
+        "totalWager": 2525.98
+      },
+      {
+        "username": "BlitzPker",
+        "totalWager": 1650.76
+      },
+      {
+        "username": "Niteslayer744",
+        "totalWager": 1317.28
+      },
+      {
+        "username": "Glock70",
+        "totalWager": 1066.22
+      },
+      {
+        "username": "ArcaneCar",
+        "totalWager": 664.9
+      },
+      {
+        "username": "Runelites",
+        "totalWager": 606.23
+      },
+      {
+        "username": "SuperCombatPot",
+        "totalWager": 514
+      },
+      {
+        "username": "DarkBowRun",
+        "totalWager": 486.14
+      },
+      {
+        "username": "Paulwalkerrrr",
+        "totalWager": 374.43
+      },
+      {
+        "username": "Dopebully",
+        "totalWager": 193.3
+      },
+      {
+        "username": "Julia20047",
+        "totalWager": 161.82
+      },
+      {
+        "username": "RakeBackDog",
+        "totalWager": 126.53
+      },
+      {
+        "username": "betrust88",
+        "totalWager": 102.1
+      },
+      {
+        "username": "NoShotHit",
+        "totalWager": 99.22
+      },
+      {
+        "username": "QuadroAlass",
+        "totalWager": 7.39
+      },
+      {
+        "username": "Avernics",
+        "totalWager": 6.43
+      },
+      {
+        "username": "togo12",
+        "totalWager": 16680.57
+      },
+      {
+        "username": "Crappincaptain",
+        "totalWager": 2355.06
+      },
+      {
+        "username": "oopoobieoo",
+        "totalWager": 2140.85
+      },
+      {
+        "username": "aerialpenguin",
+        "totalWager": 1458.4
+      },
+      {
+        "username": "Str8BTW",
+        "totalWager": 314.24
+      },
+      {
+        "username": "shubbyartist",
+        "totalWager": 59.62
+      },
+      {
+        "username": "Nik2Tik",
+        "totalWager": 45.37
+      },
+      {
+        "username": "fuizonwave",
+        "totalWager": 5
+      },
+      {
+        "username": "Mcmurder20",
+        "totalWager": 1.15
+      },
+      {
+        "username": "DoobieTime",
+        "totalWager": 1.1
+      },
+      {
+        "username": "Marc1997386",
+        "totalWager": 0.2
+      }
+    ],
+    "prevPlayers": [
+      {
+        "username": "Monkeynuts7",
+        "totalWager": 58870.57
+      },
+      {
+        "username": "Sheckmate50",
+        "totalWager": 27747.8
+      },
+      {
+        "username": "Deadhulk6999",
+        "totalWager": 13759.26
+      },
+      {
+        "username": "quietriver86",
+        "totalWager": 5400.61
+      },
+      {
+        "username": "ImZooming",
+        "totalWager": 5245.59
+      },
+      {
+        "username": "Webweaver",
+        "totalWager": 2525.98
+      },
+      {
+        "username": "BlitzPker",
+        "totalWager": 1650.76
+      },
+      {
+        "username": "Niteslayer744",
+        "totalWager": 1317.28
+      },
+      {
+        "username": "Glock70",
+        "totalWager": 1066.22
+      },
+      {
+        "username": "ArcaneCar",
+        "totalWager": 664.9
+      },
+      {
+        "username": "Runelites",
+        "totalWager": 606.23
+      },
+      {
+        "username": "SuperCombatPot",
+        "totalWager": 514
+      },
+      {
+        "username": "DarkBowRun",
+        "totalWager": 486.14
+      },
+      {
+        "username": "Paulwalkerrrr",
+        "totalWager": 374.43
+      },
+      {
+        "username": "Dopebully",
+        "totalWager": 193.3
+      },
+      {
+        "username": "Julia20047",
+        "totalWager": 161.82
+      },
+      {
+        "username": "RakeBackDog",
+        "totalWager": 126.53
+      },
+      {
+        "username": "betrust88",
+        "totalWager": 102.1
+      },
+      {
+        "username": "NoShotHit",
+        "totalWager": 99.22
+      },
+      {
+        "username": "QuadroAlass",
+        "totalWager": 7.39
+      },
+      {
+        "username": "Avernics",
+        "totalWager": 6.43
+      },
+      {
+        "username": "togo12",
+        "totalWager": 16680.57
+      },
+      {
+        "username": "Crappincaptain",
+        "totalWager": 2355.06
+      },
+      {
+        "username": "oopoobieoo",
+        "totalWager": 2140.85
+      },
+      {
+        "username": "aerialpenguin",
+        "totalWager": 1458.4
+      },
+      {
+        "username": "Str8BTW",
+        "totalWager": 314.24
+      },
+      {
+        "username": "shubbyartist",
+        "totalWager": 59.62
+      },
+      {
+        "username": "Nik2Tik",
+        "totalWager": 45.37
+      },
+      {
+        "username": "fuizonwave",
+        "totalWager": 5
+      },
+      {
+        "username": "Mcmurder20",
+        "totalWager": 1.15
+      },
+      {
+        "username": "DoobieTime",
+        "totalWager": 1.1
+      },
+      {
+        "username": "Marc1997386",
+        "totalWager": 0.2
+      }
+    ],
+    "lastUpdated": 1782236873406
+  },
+  "com": {
+    "rawPlayers": [
+      {
+        "username": "Monkeynuts7",
+        "totalWager": 58870.57
+      },
+      {
+        "username": "Sheckmate50",
+        "totalWager": 27747.8
+      },
+      {
+        "username": "Deadhulk6999",
+        "totalWager": 13759.26
+      },
+      {
+        "username": "quietriver86",
+        "totalWager": 5400.61
+      },
+      {
+        "username": "ImZooming",
+        "totalWager": 5245.59
+      },
+      {
+        "username": "Webweaver",
+        "totalWager": 2525.98
+      },
+      {
+        "username": "BlitzPker",
+        "totalWager": 1650.76
+      },
+      {
+        "username": "Niteslayer744",
+        "totalWager": 1317.28
+      },
+      {
+        "username": "Glock70",
+        "totalWager": 1066.22
+      },
+      {
+        "username": "ArcaneCar",
+        "totalWager": 664.9
+      },
+      {
+        "username": "Runelites",
+        "totalWager": 606.23
+      },
+      {
+        "username": "SuperCombatPot",
+        "totalWager": 514
+      },
+      {
+        "username": "DarkBowRun",
+        "totalWager": 486.14
+      },
+      {
+        "username": "Paulwalkerrrr",
+        "totalWager": 374.43
+      },
+      {
+        "username": "Dopebully",
+        "totalWager": 193.3
+      },
+      {
+        "username": "Julia20047",
+        "totalWager": 161.82
+      },
+      {
+        "username": "RakeBackDog",
+        "totalWager": 126.53
+      },
+      {
+        "username": "betrust88",
+        "totalWager": 102.1
+      },
+      {
+        "username": "NoShotHit",
+        "totalWager": 99.22
+      },
+      {
+        "username": "QuadroAlass",
+        "totalWager": 7.39
+      },
+      {
+        "username": "Avernics",
+        "totalWager": 6.43
+      }
+    ],
+    "prevPlayers": [
+      {
+        "username": "Monkeynuts7",
+        "totalWager": 58870.57
+      },
+      {
+        "username": "Sheckmate50",
+        "totalWager": 27747.8
+      },
+      {
+        "username": "Deadhulk6999",
+        "totalWager": 13759.26
+      },
+      {
+        "username": "quietriver86",
+        "totalWager": 5400.61
+      },
+      {
+        "username": "ImZooming",
+        "totalWager": 5245.59
+      },
+      {
+        "username": "Webweaver",
+        "totalWager": 2525.98
+      },
+      {
+        "username": "BlitzPker",
+        "totalWager": 1650.76
+      },
+      {
+        "username": "Niteslayer744",
+        "totalWager": 1317.28
+      },
+      {
+        "username": "Glock70",
+        "totalWager": 1066.22
+      },
+      {
+        "username": "ArcaneCar",
+        "totalWager": 664.9
+      },
+      {
+        "username": "Runelites",
+        "totalWager": 606.23
+      },
+      {
+        "username": "SuperCombatPot",
+        "totalWager": 514
+      },
+      {
+        "username": "DarkBowRun",
+        "totalWager": 486.14
+      },
+      {
+        "username": "Paulwalkerrrr",
+        "totalWager": 374.43
+      },
+      {
+        "username": "Dopebully",
+        "totalWager": 193.3
+      },
+      {
+        "username": "Julia20047",
+        "totalWager": 161.82
+      },
+      {
+        "username": "RakeBackDog",
+        "totalWager": 126.53
+      },
+      {
+        "username": "betrust88",
+        "totalWager": 102.1
+      },
+      {
+        "username": "NoShotHit",
+        "totalWager": 99.22
+      },
+      {
+        "username": "QuadroAlass",
+        "totalWager": 7.39
+      },
+      {
+        "username": "Avernics",
+        "totalWager": 6.43
+      }
+    ],
+    "lastUpdated": 1782236873405
+  },
+  "us": {
+    "rawPlayers": [
+      {
+        "username": "togo12",
+        "totalWager": 16680.57
+      },
+      {
+        "username": "Crappincaptain",
+        "totalWager": 2355.06
+      },
+      {
+        "username": "oopoobieoo",
+        "totalWager": 2140.85
+      },
+      {
+        "username": "aerialpenguin",
+        "totalWager": 1458.4
+      },
+      {
+        "username": "Str8BTW",
+        "totalWager": 314.24
+      },
+      {
+        "username": "shubbyartist",
+        "totalWager": 59.62
+      },
+      {
+        "username": "Nik2Tik",
+        "totalWager": 45.37
+      },
+      {
+        "username": "fuizonwave",
+        "totalWager": 5
+      },
+      {
+        "username": "Mcmurder20",
+        "totalWager": 1.15
+      },
+      {
+        "username": "DoobieTime",
+        "totalWager": 1.1
+      },
+      {
+        "username": "Marc1997386",
+        "totalWager": 0.2
+      }
+    ],
+    "prevPlayers": [
+      {
+        "username": "togo12",
+        "totalWager": 16680.57
+      },
+      {
+        "username": "Crappincaptain",
+        "totalWager": 2355.06
+      },
+      {
+        "username": "oopoobieoo",
+        "totalWager": 2140.85
+      },
+      {
+        "username": "aerialpenguin",
+        "totalWager": 1458.4
+      },
+      {
+        "username": "Str8BTW",
+        "totalWager": 314.24
+      },
+      {
+        "username": "shubbyartist",
+        "totalWager": 59.62
+      },
+      {
+        "username": "Nik2Tik",
+        "totalWager": 45.37
+      },
+      {
+        "username": "fuizonwave",
+        "totalWager": 5
+      },
+      {
+        "username": "Mcmurder20",
+        "totalWager": 1.15
+      },
+      {
+        "username": "DoobieTime",
+        "totalWager": 1.1
+      },
+      {
+        "username": "Marc1997386",
+        "totalWager": 0.2
+      }
+    ],
+    "lastUpdated": 1782236873383
+  }
+}

@@ -16,6 +16,8 @@ const STAKE_US_URL = "https://stake.us/?offer=bul&c=d245abdd90";
 
 export default function LeaderboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [period, setPeriod] = useState<'current' | 'previous'>('current');
+  const [showAll, setShowAll] = useState(false);
 
   const { 
     data: leaderboardData, 
@@ -24,7 +26,7 @@ export default function LeaderboardPage() {
     refetch 
   } = useQuery<LeaderboardData>({
     queryKey: [
-      `/api/leaderboard?source=all`
+      `/api/leaderboard?source=all&period=${period}${showAll ? '&limit=all' : ''}`
     ],
     refetchInterval: 30000,
   });
@@ -193,12 +195,40 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
       <section className="py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-50">Current Rankings</h2>
-          <div className="flex items-center gap-3">
-            {/* Live indicator */}
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-50">
+              {period === 'current' ? 'Current Rankings' : 'Previous Rankings'}
+            </h2>
+            <div className="flex flex-wrap items-center gap-4">
+              {/* Tab Switcher */}
+              <div className="flex p-1 bg-slate-900 rounded-xl border border-slate-800">
+                <button
+                  onClick={() => { setPeriod('current'); setShowAll(false); }}
+                  className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all ${
+                    period === 'current'
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Current
+                </button>
+                <button
+                  onClick={() => { setPeriod('previous'); setShowAll(false); }}
+                  className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all ${
+                    period === 'previous'
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Previous
+                </button>
+              </div>
+
+              {/* Live indicator */}
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-xs sm:text-sm text-slate-400">Live Data • Merged</span>
+                <div className={`w-2 h-2 rounded-full ${period === 'current' ? 'bg-green-500 animate-pulse' : 'bg-slate-500'}`}></div>
+                <span className="text-xs sm:text-sm text-slate-400">
+                  {period === 'current' ? 'Live Data • Merged' : 'Final Results • Merged'}
+                </span>
               </div>
             </div>
           </div>
@@ -216,16 +246,19 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
               {/* Full Rankings */}
               <div className="space-y-4">
                 {/* Existing players from API */}
-                {leaderboardData.players.slice(3).map((player) => (
-                  <LeaderboardCard 
-                    key={player.rank} 
-                    player={player}
-                    isTopThree={false}
-                  />
-                ))}
+                {(showAll ? leaderboardData.players : leaderboardData.players.slice(0, 10)).map((player, index) => {
+                  if (!showAll && index < 3) return null;
+                  return (
+                    <LeaderboardCard
+                      key={`${player.username}-${player.rank}`}
+                      player={player}
+                      isTopThree={!showAll && index < 3}
+                    />
+                  );
+                })}
                 
-                {/* Placeholder entries to fill up to 10 total */}
-                {Array.from({ length: Math.max(0, 10 - leaderboardData.players.length) }, (_, index) => {
+                {/* Placeholder entries to fill up to 10 total if not showing all */}
+                {!showAll && Array.from({ length: Math.max(0, 10 - leaderboardData.players.length) }, (_, index) => {
                   const rank = leaderboardData.players.length + index + 1;
                   const placeholderPlayer = {
                     username: "---",
@@ -242,6 +275,19 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
                   );
                 })}
               </div>
+
+              {/* View All Button */}
+              {!showAll && leaderboardData.totalPlayers > 10 && (
+                <div className="mt-8 text-center">
+                  <button
+                    onClick={() => setShowAll(true)}
+                    className="px-8 py-3 bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold rounded-xl border border-slate-800 transition-all flex items-center space-x-2 mx-auto"
+                  >
+                    <span>Show Full Leaderboard</span>
+                    <Users className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
 
               {/* Empty State */}
               {leaderboardData.players.length === 0 && (
