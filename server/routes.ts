@@ -93,11 +93,11 @@ function maskUsername(username: string): string {
   return trimmed.substring(0, 3) + "*".repeat(Math.max(3, trimmed.length - 3));
 }
 
-async function fetchPlayersFromSheet(sheetId: string, sheetName?: string): Promise<Array<{ username: string; totalWager: number }>> {
+async function fetchPlayersFromSheet(sheetId: string, gid?: string): Promise<Array<{ username: string; totalWager: number }>> {
   // Prefer external service to avoid brittle GViz parsing; default to first sheet
   let url = `${SHEETTOJSON_BASE}/api/sheet?id=${encodeURIComponent(sheetId)}`;
-  if (sheetName) {
-    url += `&sheet=${encodeURIComponent(sheetName)}`;
+  if (gid) {
+    url += `&gid=${encodeURIComponent(gid)}`;
   }
   const resp = await axios.get(url, { timeout: 15000 });
   const payload = resp.data;
@@ -142,17 +142,17 @@ async function fetchPlayersFromSheet(sheetId: string, sheetName?: string): Promi
 }
 
 async function fetchAggregatedPlayers(source: SourceKey, period: "current" | "previous" = "current"): Promise<Array<{ username: string; totalWager: number }>> {
-  const sheetName = period === "current" ? "Top Wager Current Month" : "Top Wager Past Month";
+  const gid = period === "current" ? "235680015" : "1502602180";
   if (source === "com") {
-    return await fetchPlayersFromSheet(SHEET_COM_ID, sheetName).catch(() => []);
+    return await fetchPlayersFromSheet(SHEET_COM_ID, gid).catch(() => []);
   }
   if (source === "us") {
-    return await fetchPlayersFromSheet(SHEET_US_ID, sheetName).catch(() => []);
+    return await fetchPlayersFromSheet(SHEET_US_ID, gid).catch(() => []);
   }
   // all
   const [comPlayers, usPlayers] = await Promise.all([
-    fetchPlayersFromSheet(SHEET_COM_ID, sheetName).catch(() => []),
-    fetchPlayersFromSheet(SHEET_US_ID, sheetName).catch(() => []),
+    fetchPlayersFromSheet(SHEET_COM_ID, gid).catch(() => []),
+    fetchPlayersFromSheet(SHEET_US_ID, gid).catch(() => []),
   ]);
 
   const totals = new Map<string, number>();
