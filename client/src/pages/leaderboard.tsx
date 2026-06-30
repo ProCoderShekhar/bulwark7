@@ -252,7 +252,7 @@ const competitionLabel = competitionData?.startDate && competitionData?.endDate
                     <LeaderboardCard
                       key={`${player.username}-${player.rank}`}
                       player={player}
-                      isTopThree={!showAll && index < 3}
+                      isTopThree={index < 3}
                     />
                   );
                 })}
